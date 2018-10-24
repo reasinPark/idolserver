@@ -21,7 +21,7 @@
 
 	boolean isfirst = false;
 	
-	conn = ConnectionProvider.getConnection("afgt");
+	conn = ConnectionProvider.getConnection("idol");
 	
 	try {			
 			ArrayList<AdminStoryReadCount> list = new ArrayList<AdminStoryReadCount>();					// 해당 이야기를 1화를 1컷이라도 읽은 유니크 정보 리스트

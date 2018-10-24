@@ -29,7 +29,7 @@
 	String enddate = request.getParameter("enddate");
 	boolean isfirst = false;
 
-	conn = ConnectionProvider.getConnection("afgt");
+	conn = ConnectionProvider.getConnection("idol");
 	pstmt = conn.prepareStatement("select date_format(date_add(now(), interval -7 day),'%Y-%m-%d'),date_format(now(),'%Y-%m-%d')");
 	rs = pstmt.executeQuery();
 	
@@ -100,7 +100,7 @@
 			filename = "user_selectitem.csv";
 			fw = new FileWriter(filepath+filename);
 
-			conn = ConnectionProvider.getConnection("logdb");
+			conn = ConnectionProvider.getConnection("idol_logdb");
 			pstmt = conn.prepareStatement("select date_format(regdate, '%Y-%m-%d') m, storyid from info_episode where regdate between ? and ?");
 
 			Timestamp start = Timestamp.valueOf(startdate + " 00:00:00");
@@ -117,7 +117,7 @@
 				list.add(ac);
 			}
 			
-			conn = ConnectionProvider.getConnection("afgt");
+			conn = ConnectionProvider.getConnection("idol");
 			pstmt = conn.prepareStatement("select date_format(input_date, '%Y-%m-%d') m,storyid,count(uid) from user_selectitem where input_date between ? and ? group by storyid,m");
 			pstmt.setTimestamp(1, start);
 			pstmt.setTimestamp(2, end);

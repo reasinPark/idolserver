@@ -67,7 +67,7 @@
 			// 1. 서버에 저장
 			filename = "AssetBundleVersion.csv";
 			fw = new FileWriter(filepath+filename);
-			conn = ConnectionProvider.getConnection("afgt");
+			conn = ConnectionProvider.getConnection("idol");
 			
 			pstmt = conn.prepareStatement("select AssetBundleName, version from AssetBundleVersion");
 			

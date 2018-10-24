@@ -31,7 +31,7 @@
 
 <%
 	try {
-		Connection conn = ConnectionProvider.getConnection("afgt");
+		Connection conn = ConnectionProvider.getConnection("idol");
 		PreparedStatement pstmt = conn.prepareStatement("select Story_id, episode_num, episode_name, csvfilename, ticket, gem, purchaseinfo, reward_gem, " +
 														"reward_ticket, rewardinfo, writer, director, imgname, likecount, summary, subtitle from episode");
 		ResultSet rs = pstmt.executeQuery();

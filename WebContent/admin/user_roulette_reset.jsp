@@ -15,7 +15,7 @@
 	request.setCharacterEncoding("UTF-8");
 	PreparedStatement pstmt = null;
 	Statement stmt = null;
-	Connection conn = ConnectionProvider.getConnection("afgt");
+	Connection conn = ConnectionProvider.getConnection("idol");
 	ResultSet rs = null;
 	try{
 		/* select ticketgentime , DATE_FORMAT(ticketgentime,'%Y-%m-%d %H:%i:%s') from user limit 1; */

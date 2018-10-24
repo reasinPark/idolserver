@@ -31,7 +31,7 @@
 
 <%
 	try {
-		Connection conn = ConnectionProvider.getConnection("afgt");
+		Connection conn = ConnectionProvider.getConnection("idol");
 		PreparedStatement pstmt = conn.prepareStatement("select idx, Newmark, Title, Text, sort, imgname, type, callid from bannerdata");
 		ResultSet rs = pstmt.executeQuery();
 				

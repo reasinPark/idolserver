@@ -31,7 +31,7 @@
 
 <%
 	try {
-		Connection conn = ConnectionProvider.getConnection("afgt");
+		Connection conn = ConnectionProvider.getConnection("idol");
 		PreparedStatement pstmt = conn.prepareStatement("select selectid, price, storyid, epinum from SelectItem");
 		ResultSet rs = pstmt.executeQuery();
 				

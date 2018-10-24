@@ -31,7 +31,7 @@
 
 <%
 	try {
-		Connection conn = ConnectionProvider.getConnection("afgt");
+		Connection conn = ConnectionProvider.getConnection("idol");
 		PreparedStatement pstmt = conn.prepareStatement("select id, type, title, price, gem, ticket, PID_android, PID_ios, price_ios from shop_item");
 		ResultSet rs = pstmt.executeQuery();
 				

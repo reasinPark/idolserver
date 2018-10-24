@@ -30,7 +30,7 @@
 	String enddate = request.getParameter("enddate");
 	boolean isfirst = false;
 	
-	conn = ConnectionProvider.getConnection("logdb");
+	conn = ConnectionProvider.getConnection("idol_logdb");
 	pstmt = conn.prepareStatement("select date_format(date_add(now(), interval -7 day),'%Y-%m-%d'),date_format(now(),'%Y-%m-%d')");
 	rs = pstmt.executeQuery();
 	
@@ -92,7 +92,7 @@
 			Timestamp start = Timestamp.valueOf(startdate + " 00:00:00");
 			Timestamp end = Timestamp.valueOf(enddate + " 23:59:59");
 			
-			conn = ConnectionProvider.getConnection("logdb");
+			conn = ConnectionProvider.getConnection("idol_logdb");
 			pstmt = conn.prepareStatement("select date_format(regdate, '%Y-%m-%d'), freeticket, cashticket, totalticket, freegem, cashgem, totalgem from user_cash where regdate between ? and ?");
 			pstmt.setTimestamp(1, start);
 			pstmt.setTimestamp(2, end);

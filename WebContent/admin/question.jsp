@@ -23,7 +23,7 @@
 	ArrayList<Question> list = new ArrayList<Question>();
 
 	try {
-		Connection conn = ConnectionProvider.getConnection("afgt");
+		Connection conn = ConnectionProvider.getConnection("idol");
 		PreparedStatement pstmt = conn.prepareStatement("select idx, uid, email, subject, contents, date from question");
 		ResultSet rs = pstmt.executeQuery();
 				

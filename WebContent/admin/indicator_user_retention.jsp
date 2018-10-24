@@ -28,7 +28,7 @@
 	String enddate = request.getParameter("enddate");
 	boolean isfirst = false;
 
-	conn = ConnectionProvider.getConnection("afgt");
+	conn = ConnectionProvider.getConnection("idol");
 	pstmt = conn.prepareStatement("select date_format(date_add(now(), interval -7 day),'%Y-%m-%d'),date_format(now(),'%Y-%m-%d')");
 	rs = pstmt.executeQuery();
 	
@@ -90,7 +90,7 @@
 			filename = "user_retention.csv";
 			fw = new FileWriter(filepath+filename);
 			
-			conn = ConnectionProvider.getConnection("logdb");
+			conn = ConnectionProvider.getConnection("idol_logdb");
 			
 			pstmt = conn.prepareStatement("select date_format(date, '%Y-%m-%d'), day1, day1n0, day6, day6n0, day29, day29n0 from user_retention where date between " +
 										  "? and ?");

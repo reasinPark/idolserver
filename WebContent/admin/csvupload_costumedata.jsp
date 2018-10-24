@@ -31,7 +31,7 @@
 
 <%
 	try {
-		Connection conn = ConnectionProvider.getConnection("afgt");
+		Connection conn = ConnectionProvider.getConnection("idol");
 		PreparedStatement pstmt = conn.prepareStatement("select CostumeId, CallId, ChId, Skinname, filename, thumnailname, selectani, buyani, description, cash, " + 
 														"name, episodeid, storyid, viewingame, BFilename, BSkinname, FFilename, FSkinname, HFilename, HSkinname, " +
 														"AFilename, ASkinname from CostumeData");

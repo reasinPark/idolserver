@@ -15,7 +15,7 @@
 	request.setCharacterEncoding("UTF-8");
 	PreparedStatement pstmt = null;
 	Statement stmt = null;
-	Connection conn = ConnectionProvider.getConnection("afgt");
+	Connection conn = ConnectionProvider.getConnection("idol");
 	ResultSet rs = null;
 	try{
 		pstmt = conn.prepareStatement("update user_attend set attendDate = '2018-01-01 00:00:00', sumAttend = 0");

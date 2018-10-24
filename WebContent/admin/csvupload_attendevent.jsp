@@ -38,7 +38,7 @@
 <%
 	try {
 		Module module = new Module();
-		Connection conn = ConnectionProvider.getConnection("afgt");
+		Connection conn = ConnectionProvider.getConnection("idol");
 		PreparedStatement pstmt = conn.prepareStatement("select eventName, onoff, DATE_FORMAT(startDate,'%Y-%m-%d %H:%i:%s'), DATE_FORMAT(endDate,'%Y-%m-%d %H:%i:%s'), " +
 														"d1itemId_1, d1itemId_2, d1itemId_3, d1itemId_4, d2itemId_1, d2itemId_2, d2itemId_3, d2itemId_4," +
 														"d3itemId_1, d3itemId_2, d3itemId_3, d3itemId_4, d4itemId_1, d4itemId_2, d4itemId_3, d4itemId_4," +

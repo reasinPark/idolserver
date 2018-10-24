@@ -31,7 +31,7 @@
 
 <%
 	try {
-		Connection conn = ConnectionProvider.getConnection("afgt");
+		Connection conn = ConnectionProvider.getConnection("idol");
 		PreparedStatement pstmt = conn.prepareStatement("select itemid, name, Story_id, scope, img from itemdata");
 		ResultSet rs = pstmt.executeQuery();
 				

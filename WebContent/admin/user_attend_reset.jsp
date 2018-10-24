@@ -15,7 +15,7 @@
 	request.setCharacterEncoding("UTF-8");
 	PreparedStatement pstmt = null;
 	Statement stmt = null;
-	Connection conn = ConnectionProvider.getConnection("afgt");
+	Connection conn = ConnectionProvider.getConnection("idol");
 	ResultSet rs = null;
 	try{
 		long attendDate = 0;

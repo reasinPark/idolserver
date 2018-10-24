@@ -26,7 +26,7 @@
 	String enddate = request.getParameter("enddate");
 	boolean isfirst = false;
 
-	conn = ConnectionProvider.getConnection("logdb");
+	conn = ConnectionProvider.getConnection("idol_logdb");
 	pstmt = conn.prepareStatement("select date_format(date_add(now(), interval -7 day),'%Y-%m-%d'),date_format(now(),'%Y-%m-%d')");
 	rs = pstmt.executeQuery();
 	
