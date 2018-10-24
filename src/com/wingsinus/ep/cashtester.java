@@ -22,7 +22,7 @@ public class cashtester {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try{
-			Connection conn = ConnectionProvider.getConnection("afgt");
+			Connection conn = ConnectionProvider.getConnection("idol");
 			
 			pstmt = conn.prepareStatement("select uid,score,rank,season from admin_ranksummary");
 			

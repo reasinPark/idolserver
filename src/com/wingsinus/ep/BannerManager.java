@@ -27,7 +27,7 @@ public class BannerManager {
 		ResultSet rs = null;
 		Connection conn = null;
 		try{
-			conn = ConnectionProvider.getConnection("afgt");
+			conn = ConnectionProvider.getConnection("idol");
 			
 			pstmt = conn.prepareStatement("select Newmark,Title,Text,imgname,type,callid from bannerdata where Sort > 0 order by Sort");
 			

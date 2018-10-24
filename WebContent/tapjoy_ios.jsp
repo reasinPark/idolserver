@@ -16,7 +16,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	PreparedStatement pstmt = null;
-	Connection conn = ConnectionProvider.getConnection("afgt");
+	Connection conn = ConnectionProvider.getConnection("idol");
 	ResultSet rs = null;
 	
 	try {

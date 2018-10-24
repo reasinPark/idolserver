@@ -46,7 +46,7 @@ public class CostumeData {
 		ResultSet rs = null;
 		Connection conn = null;
 		try{
-			conn = ConnectionProvider.getConnection("afgt");
+			conn = ConnectionProvider.getConnection("idol");
 			
 			pstmt = conn.prepareStatement("select CostumeId,CallId,ChId,Skinname,filename,thumnailname,selectani,buyani,description,cash,name,episodeid,storyid,viewingame,BFilename,BSkinname,FFilename,FSkinname,HFilename,HSkinname,AFilename,ASkinname from CostumeData");
 			

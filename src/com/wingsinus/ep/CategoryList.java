@@ -27,7 +27,7 @@ public class CategoryList {
 		ResultSet rs = null;
 		Connection conn = null;
 		try{
-			conn = ConnectionProvider.getConnection("afgt");
+			conn = ConnectionProvider.getConnection("idol");
 			
 			pstmt = conn.prepareStatement("select category_id,categoryname,ordernum from categorylist where ordernum > 0 order by ordernum");
 			

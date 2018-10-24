@@ -26,7 +26,7 @@
 	request.setCharacterEncoding("UTF-8");
 	// test log
 	PreparedStatement pstmt = null;
-	Connection conn = ConnectionProvider.getConnection("afgt");
+	Connection conn = ConnectionProvider.getConnection("idol");
 	ResultSet rs = null;
 
 	try{

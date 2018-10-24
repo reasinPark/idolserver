@@ -39,7 +39,7 @@ public class EpisodeList {
 		ResultSet rs = null;
 		Connection conn = null;
 		try{
-			conn = ConnectionProvider.getConnection("afgt");
+			conn = ConnectionProvider.getConnection("idol");
 			
 			pstmt = conn.prepareStatement("select Story_id,episode_num,episode_name,csvfilename,ticket,gem,purchaseinfo,reward_gem,reward_ticket,rewardinfo,writer,director,imgname,likecount,summary,subtitle from episode");
 			

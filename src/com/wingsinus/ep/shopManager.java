@@ -33,7 +33,7 @@ public class shopManager {
 		ResultSet rs = null;
 		Connection conn = null;
 		try{
-			conn = ConnectionProvider.getConnection("afgt");
+			conn = ConnectionProvider.getConnection("idol");
 			
 			pstmt = conn.prepareStatement("select id,type,title,price,gem,ticket,PID_android,PID_ios,price_ios from shop_item");
 			

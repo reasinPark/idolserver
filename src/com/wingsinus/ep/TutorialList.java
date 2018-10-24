@@ -27,7 +27,7 @@ public class TutorialList {
 		ResultSet rs = null;
 		Connection conn = null;
 		try{
-			conn = ConnectionProvider.getConnection("afgt");
+			conn = ConnectionProvider.getConnection("idol");
 			
 			pstmt = conn.prepareStatement("select Story_id, episode_num, summary from tutorial");
 			

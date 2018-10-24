@@ -36,7 +36,7 @@
 	// test log
 	PreparedStatement pstmt = null;
 	Statement stmt = null;
-	Connection conn = ConnectionProvider.getConnection("afgt");
+	Connection conn = ConnectionProvider.getConnection("idol");
 	ResultSet rs = null;
 	int Storyversion = 0;
 	Module module = new Module();

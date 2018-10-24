@@ -12,7 +12,7 @@ public class LogManager {
 		ResultSet rs = null;
 		Connection conn = null;
 		try{
-			conn = ConnectionProvider.getConnection("logdb");
+			conn = ConnectionProvider.getConnection("idollogdb");
 			
 			pstmt = conn.prepareStatement("insert into log_action (uid,action_type,action_name,item,point,count) values(?,?,?,?,?,?)");
 			
@@ -41,7 +41,7 @@ public class LogManager {
 		ResultSet rs = null;
 		Connection conn = null;
 		try{
-			conn = ConnectionProvider.getConnection("logdb");
+			conn = ConnectionProvider.getConnection("idollogdb");
 			
 			pstmt = conn.prepareStatement("insert into log_cash (uid,have_freeticket,have_cashticket,have_freegem,have_cashgem) values(?,?,?,?,?)");
 			
@@ -70,7 +70,7 @@ public class LogManager {
 		ResultSet rs = null;
 		Connection conn = null;
 		try{
-			conn = ConnectionProvider.getConnection("logdb");
+			conn = ConnectionProvider.getConnection("idollogdb");
 			
 			pstmt = conn.prepareStatement("insert into payment_receipt (uid,productid,ident) values(?,?,?)");
 			

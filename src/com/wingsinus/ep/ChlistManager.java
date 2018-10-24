@@ -29,7 +29,7 @@ public class ChlistManager {
 		ResultSet rs = null;
 		Connection conn = null;
 		try{
-			conn = ConnectionProvider.getConnection("afgt");
+			conn = ConnectionProvider.getConnection("idol");
 			
 			pstmt = conn.prepareStatement("select id, name, hid, bid, oid, portrait from chlist");
 			
