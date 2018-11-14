@@ -289,6 +289,8 @@
 			int gem = 0;
 			String service = "";
 			String token = "";
+			int avartar = 0;
+			String uname = "";
 			
 			BannerManager.CheckStoryversion(Storyversion);
 			
@@ -330,6 +332,8 @@
 				gem = freegem + cashgem;
 				service = rs.getString("service");
 				token = rs.getString("token");
+				avartar = rs.getInt("avatar");
+				uname = rs.getString("avatarname"); 
 				
 				ArrayList<CostumeData> cmp = CostumeData.getDataAll();
 				for(int i=0;i<cmp.size();i++){
@@ -724,6 +728,8 @@
 			ret.put("nowtime",now);
 			ret.put("service", service);
 			ret.put("token", token);
+			ret.put("avatar",avartar);
+			ret.put("uname",uname);
 			ret.put("uiversion",bundleversion);
 			System.out.println("cli version is :"+clientversion);
 			ret.put("cliversion",clientversion);
@@ -2513,6 +2519,36 @@
 					ret.put("result", -1);
 				}
 			}
+		}else if(cmd.equals("makeavatar")){
+			//아바타 세팅 했는지 확인
+			//했으면 튕김.
+			//안했으면 받은 이름과 아바타 형태 세팅 
+			int avatarnum = Integer.valueOf(request.getParameter("avatarnum"));
+			String uname = request.getParameter("uname");
+			
+			int nowavatarnum = 0;
+			String nowuname = "";
+			//아바타 세팅 여부 확인
+			pstmt = conn.prepareStatement("select avatar,avatarname from user where uid = ?");
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()){
+				nowavatarnum = rs.getInt(1);
+				nowuname = rs.getString(2);
+				if(nowavatarnum==0){
+					//insert into user avatarnum and uname
+					pstmt = conn.prepareStatement("update user set avatar = ?, avatarname = ? where uid = ?");
+					pstmt.setInt(1,avatarnum);
+					pstmt.setString(2, uname);
+					pstmt.setString(3,userid);
+					int result = pstmt.executeUpdate();
+					ret.put("result",result);
+				}else{
+					ret.put("result",0);//already have avatar 
+				}
+			}
+			
 		}
 		
 		out.print(ret.toString());
