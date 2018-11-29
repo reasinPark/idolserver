@@ -19,7 +19,7 @@
 <%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="org.json.simple.JSONArray" %>
 <%! 
-String publicKeyStr = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtnzIiqN91pDN5QjpNLiAe3EJrNOAzYPZiO63+ydA7CgpENnEg4oyBS7sUF+tq3Ad8k4Dzs0Qyjw4a9HcbsdylMNt7+0k0LbQU83FuwJ1rKn3I+Fwk4C7zx3busJ+p7SU3mbPw9c6Ts70wFnaiDMYNIPNH0nFQenggK6Oxy7FdmtiWSeb16iuxMcGX2uo48ywcAgGNRr7wGSD+SnQRwIDpaJVhPUYcz6ZdQPsiifR3dFZLvq2xlahcIDyfaj9NtfH7gJptOXaNeKQ01pq1+u8o3beSv2bz/6bTmlmA2GAxcW+/gPZvKwWJN+crsE/y+K+f5rUm1nWWDYGPxIu7bduiwIDAQAB";
+String publicKeyStr = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt9UykR+HYux+aRYLYjST7KnMyktcEydze/bxTvwGRtCvj/tUQ8/FSYQ1uEsfNTQrSOQRg62BxhksG6wOxjTqkeWyH5UkklpylNfl0Nr2kBLFU38JsVyboZHEfQSdKph6YOsvGN3VzA6avs1RqfBFJ0meTa2xaTpIo7bvpTLOmNKz3d8VbDZB4KfwRK09dP8Kw5S5PkMeZmTzO61jidCJPLnYIBSj/kI8/SqZ5Ksz5AGoy6OVJFwWZsDj8HMh3Y5u46U98Gz3QdB2+qtk7vCbIxjAzKe9zuQquiDDUaVH6DOxXpm8ZGJTsS7GBsiWBBrrkXUSjsiaMOSSZyH2X+VNYwIDAQAB";
 public JSONObject newCheckreceipt(String receipt,int store)throws Exception{// store 1 is google, store 2 is ios
 	JSONObject result = new JSONObject();
 	JSONParser parser = new JSONParser();

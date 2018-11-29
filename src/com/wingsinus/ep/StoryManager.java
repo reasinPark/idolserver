@@ -20,6 +20,8 @@ public class StoryManager {
 	public int recommend;
 	public int totalcount;
 	public String diretor;
+	public String engname;
+	public String comment;
 	public static int nowversion = 0;
 	
 	private static ArrayList<StoryManager> list = null;
@@ -37,7 +39,7 @@ public class StoryManager {
 		try{
 			conn = ConnectionProvider.getConnection("idol");
 			
-			pstmt = conn.prepareStatement("select Story_id, csvfilename, title, writer, summary, category_id, imgname, recommend, totalcount, director from story order by sort");
+			pstmt = conn.prepareStatement("select Story_id, csvfilename, title, writer, summary, category_id, imgname, recommend, totalcount, director, engname, comment from story order by sort");
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()){
@@ -53,6 +55,8 @@ public class StoryManager {
 				data.recommend = rs.getInt(idx++);
 				data.totalcount = rs.getInt(idx++);
 				data.diretor = rs.getString(idx++);
+				data.engname = rs.getString(idx++);
+				data.comment = rs.getString(idx++);
 				list.add(data);
 				hash.put(data.Story_id, data);
 			}

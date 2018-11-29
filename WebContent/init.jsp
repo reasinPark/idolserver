@@ -291,7 +291,12 @@
 			String token = "";
 			int avartar = 0;
 			String uname = "";
-			
+			long lastgentime = 0;
+			int cool = 0;
+			int cute = 0;
+			int hot = 0;
+			int fashion = 0;
+						
 			BannerManager.CheckStoryversion(Storyversion);
 			
 			CategoryList.CheckStoryversion(Storyversion);
@@ -334,7 +339,12 @@
 				token = rs.getString("token");
 				avartar = rs.getInt("avatar");
 				uname = rs.getString("avatarname"); 
-				
+				lastgentime = rs.getTimestamp("lastgentime").getTime()/1000;
+				cool = rs.getInt("cool");
+				hot = rs.getInt("hot");
+				cute = rs.getInt("cute");
+				fashion = rs.getInt("fashion");
+								
 				ArrayList<CostumeData> cmp = CostumeData.getDataAll();
 				for(int i=0;i<cmp.size();i++){
 					CostumeData cmpD = cmp.get(i);
@@ -421,6 +431,10 @@
 					data.put("price",smp.Price);
 					data.put("storyid",smp.StoryId);
 					data.put("epinum",smp.Epinum);
+					data.put("cool",smp.Cool);
+					data.put("hot",smp.Hot);
+					data.put("cute",smp.Cute);
+					data.put("fashion",smp.Fashion);
 					System.out.println("data is :"+smp.SelectId+","+smp.Epinum);
 					sellist.add(data);
 				}
@@ -724,6 +738,7 @@
 			ret.put("selectitemlist",sellist);
 			ret.put("ticket", ticket);
 			ret.put("ticketgentime",gentime);
+			ret.put("lastgentime",lastgentime);
 			ret.put("gem",gem);
 			ret.put("nowtime",now);
 			ret.put("service", service);
@@ -731,6 +746,10 @@
 			ret.put("avatar",avartar);
 			ret.put("uname",uname);
 			ret.put("uiversion",bundleversion);
+			ret.put("cool",cool);
+			ret.put("hot",hot);
+			ret.put("fashion",fashion);
+			ret.put("cute",cute);
 			System.out.println("cli version is :"+clientversion);
 			ret.put("cliversion",clientversion);
 		}else if(cmd.equals("buyskin")){
@@ -1119,8 +1138,14 @@
 							if (data.reward_gem > 0) {
 								LogManager.writeNorLog(userid, "success_increase", cmd, "freegem", "null", data.reward_gem);
 							}
+							int rewardnum = 0;
+							if(data.reward_ticket+data.reward_gem>0){
+								rewardnum = 1;
+							}else{
+								rewardnum = 0;
+							}
 							ret.put("success", 1);
-							ret.put("reward", 1);
+							ret.put("reward", rewardnum);
 							
 							pstmt = conn.prepareStatement("select freegem,cashgem,freeticket,cashticket from user where uid = ?");
 							pstmt.setString(1, userid);
@@ -1181,7 +1206,14 @@
 							LogManager.writeNorLog(userid, "success_increase", cmd, "freegem", "null", data.reward_gem);
 						}
 						ret.put("success", 1);
-						ret.put("reward", 1);
+						int rewardnum = 0;
+						if(data.reward_ticket+data.reward_gem>0){
+							rewardnum = 1;
+						}else{
+							rewardnum = 0;
+						}
+						ret.put("success", 1);
+						ret.put("reward", rewardnum);
 						
 						pstmt = conn.prepareStatement("select freegem,cashgem,freeticket,cashticket from user where uid = ?");
 						pstmt.setString(1, userid);
@@ -1261,7 +1293,6 @@
 				pstmt = conn.prepareStatement("select freeticket, cashticket, freegem, cashgem from user where uid = ?");
 				pstmt.setString(1, userid);
 				rs = pstmt.executeQuery();
-				
 				int freeticket = 0;
 				int cashticket = 0;
 				int freegem = 0;	
@@ -1327,14 +1358,17 @@
 						
 						while(rs.next()){
 							int myticket = rs.getInt(1)+rs.getInt(2);
-							
+							int oriticket = freeticket +cashticket;
 							ret.put("myticket", myticket);
 							
-							if (myticket == 0) {
-								pstmt = conn.prepareStatement("update user set ticketgentime = date_add(now(), interval 2 day) where uid = ?");
+							if (oriticket <= 10) {
+								String qry = "";
+								qry = "update user set ticketgentime = now() where uid = ?";
+								pstmt = conn.prepareStatement(qry);
 								pstmt.setString(1, userid);
-								
+								System.out.println("update try is :"+ticketValue);
 								if(pstmt.executeUpdate()==1){
+									System.out.println("update success");
 									
 									pstmt = conn.prepareStatement("select ticketgentime,now() from user where uid = ?");
 									pstmt.setString(1,userid);
@@ -1375,6 +1409,10 @@
 			String Storyid = request.getParameter("StoryId");
 			int episodenum = Integer.valueOf(request.getParameter("episodenum"));
 			int selectid = Integer.valueOf(request.getParameter("selectid"));
+			int cool = 0;
+			int cute = 0;
+			int hot = 0;
+			int fashion = 0;
 			
 			System.out.println("input write user choice"+Storyid+","+episodenum+","+selectid);
 			
@@ -1403,6 +1441,10 @@
 						data = slist.get(i);
 					}
 				}
+				cool = data.Cool;
+				hot = data.Hot;
+				cute = data.Cute;
+				fashion = data.Fashion;
 				System.out.println("data is :"+data.Price+", user is :"+userid);
 				if(data.Price == 0){
 					System.out.println("no data");
@@ -1447,14 +1489,22 @@
 					int upresult = 0;
 					
 					if(cashtype==1){
-						pstmt = conn.prepareStatement("update user set cashgem = ? where uid = ?");
+						pstmt = conn.prepareStatement("update user set cashgem = ?, cool = cool + ?, hot = hot + ?, cute = cute + ?, fashion = fashion + ? where uid = ?");
 						pstmt.setInt(1, aftercashgem);
-						pstmt.setString(2, userid);
+						pstmt.setInt(2, cool);
+						pstmt.setInt(3, hot);
+						pstmt.setInt(4, cute);
+						pstmt.setInt(5, fashion);
+						pstmt.setString(6, userid);
 						upresult = pstmt.executeUpdate();
 					}else if(cashtype==2){
-						pstmt = conn.prepareStatement("update user set freegem = ? , cashgem = 0 where uid = ?");
+						pstmt = conn.prepareStatement("update user set freegem = ? , cashgem = 0, cool = cool + ?, hot = hot + ?, cute = cute + ?, fashion = fashion + ? where uid = ?");
 						pstmt.setInt(1,afterfreegem);
-						pstmt.setString(2, userid);
+						pstmt.setInt(2, cool);
+						pstmt.setInt(3, hot);
+						pstmt.setInt(4, cute);
+						pstmt.setInt(5, fashion);
+						pstmt.setString(6, userid);
 						upresult = pstmt.executeUpdate();
 					}
 					
@@ -1494,6 +1544,24 @@
 								selectlist.add(sdata);
 							}
 							LogManager.writeNorLog(userid,"success_write_userchoice",cmd,Storyid,String.valueOf(episodenum),data.Price);
+							
+							pstmt = conn.prepareStatement("select cool,hot,cute,fashion from user where uid = ?");
+							pstmt.setString(1, userid);
+							rs = pstmt.executeQuery();
+							int ucool = 0;
+							int ucute = 0;
+							int ufashion = 0;
+							int uhot = 0;
+							if(rs.next()){
+								ucool = rs.getInt(1);
+								uhot = rs.getInt(2);
+								ucute = rs.getInt(3);
+								ufashion = rs.getInt(4);
+							}
+							ret.put("cool", ucool);
+							ret.put("cute",ucute);
+							ret.put("hot",uhot);
+							ret.put("fashion",ufashion);
 							ret.put("userselectlist",selectlist);
 							ret.put("result",1);
 							
@@ -1516,10 +1584,13 @@
 			
 		}
 		else if(cmd.equals("ticketcharge")) {
-			
+			System.out.println("input ticket charge");
 			long ticketGenTime = 0;
+			long lastGenTime = 0;
+			int myticket = 0;
+			int needcharge = 0;
 			
-			pstmt = conn.prepareStatement("select ticketgentime,now() from user where uid = ?");
+			pstmt = conn.prepareStatement("select ticketgentime,now(),freeticket,cashticket,lastgentime from user where uid = ?");
 			pstmt.setString(1,userid);
 			
 			rs = pstmt.executeQuery();
@@ -1527,7 +1598,95 @@
 			if(rs.next()){
 				ticketGenTime = rs.getTimestamp(1).getTime()/1000;
 				now = rs.getTimestamp(2).getTime()/1000;
+				myticket = rs.getInt(3)+rs.getInt(4);
+				lastGenTime = rs.getTimestamp(5).getTime()/1000;
 				
+				if(myticket<10){
+					if(lastGenTime<ticketGenTime)lastGenTime=ticketGenTime;
+					needcharge = (int)(now - lastGenTime)/(60*60*8);
+					System.out.println("need charge is :"+needcharge+", "+myticket);
+					if(needcharge+myticket>10)needcharge = 10-myticket;
+					if(needcharge>0&&needcharge+myticket<=10){
+						pstmt = conn.prepareStatement("update user set freeticket = freeticket + ? , lastgentime = date_add(ticketgentime, interval ? hour) where uid = ?");
+						pstmt.setInt(1,needcharge);
+						pstmt.setInt(2,needcharge*8);
+						pstmt.setString(3,userid);
+						if(pstmt.executeUpdate()>0){
+							LogManager.writeNorLog(userid, "success_increase", cmd, "freeticket","null", 1);
+							ret.put("nocharge", 1);
+							ret.put("success", 1);
+							
+							pstmt = conn.prepareStatement("select freegem,cashgem,freeticket,cashticket,lastgentime,ticketgentime,now() from user where uid = ?");
+							pstmt.setString(1, userid);
+							rs = pstmt.executeQuery();
+							
+							if(rs.next()) {
+								ret.put("lastgentime",rs.getTimestamp(5).getTime()/1000);
+								ret.put("ticketgentime",rs.getTimestamp(6).getTime()/1000);
+								ret.put("now",rs.getTimestamp(6).getTime()/1000);
+								LogManager.writeCashLog(userid, rs.getInt("freeticket"), rs.getInt("cashticket"), rs.getInt("freegem"), rs.getInt("cashgem"));
+							}
+							else {
+								LogManager.writeNorLog(userid, "fail_cashlog", cmd, "freeticket","null", 1);
+							}
+						}else{
+							LogManager.writeNorLog(userid, "fail_increase", cmd, "freeticket","null", 1);
+							ret.put("nocharge", 1);
+							ret.put("success", 0);
+						}
+					}else {
+						System.out.println("need more time");
+						ret.put("nocharge", 1);
+						ret.put("now", now);
+						ret.put("success", 0);
+					}
+				}else {
+					System.out.println("need more time");
+					ret.put("nocharge", 0);
+					ret.put("now", now);
+					ret.put("success", 0);
+				}
+				/* 
+				if(ticketGenTime < now){
+					long diffh =  (now-ticketGenTime)/(60*60);
+					int chageTicketCount = (int) (diffh/8);
+					System.out.println("c :"+chageTicketCount+"m :"+myticket);
+					if(chageTicketCount>0&&myticket<10){
+						if(chageTicketCount+myticket>=10){
+							chageTicketCount =  10 - myticket;
+						}
+						pstmt = conn.prepareStatement("update user set freeticket = freeticket + ?, ticketgentime = now() where uid = ?");
+						pstmt.setInt(1, chageTicketCount);
+						pstmt.setString(2, userid);
+						if(pstmt.executeUpdate()>0){
+							LogManager.writeNorLog(userid, "success_increase", cmd, "freeticket","null", 1);
+							ret.put("nocharge", 1);
+							ret.put("success", 1);
+							
+							pstmt = conn.prepareStatement("select freegem,cashgem,freeticket,cashticket from user where uid = ?");
+							pstmt.setString(1, userid);
+							rs = pstmt.executeQuery();
+							
+							if(rs.next()) {
+								LogManager.writeCashLog(userid, rs.getInt("freeticket"), rs.getInt("cashticket"), rs.getInt("freegem"), rs.getInt("cashgem"));
+							}
+							else {
+								LogManager.writeNorLog(userid, "fail_cashlog", cmd, "freeticket","null", 1);
+							}
+						}else{
+							LogManager.writeNorLog(userid, "fail_increase", cmd, "freeticket","null", 1);
+							ret.put("nocharge", 1);
+							ret.put("success", 0);
+						}
+					}else {
+						System.out.println("need more time");
+						ret.put("nocharge", 0);
+						ret.put("now", now);
+						ret.put("success", 0);
+					}
+				}
+				 */
+				/* 
 				if(ticketGenTime < now) {
 					
 					pstmt = conn.prepareStatement("select freeticket, cashticket from user where uid = ?");
@@ -1535,7 +1694,6 @@
 					rs = pstmt.executeQuery();
 					
 					if(rs.next()) {
-						int myticket = 0;
 						myticket = rs.getInt(1) + rs.getInt(2);
 						
 						if(myticket > 0) {
@@ -1576,7 +1734,11 @@
 					System.out.println("need more time");
 					ret.put("nocharge", 0);
 					ret.put("now", now);
-				}
+				} */
+			}else{
+				ret.put("nocharge", 0);
+				ret.put("success", 0);
+				ret.put("now", now);
 			}
 		}
 		else if(cmd.equals("checkgem")) {
@@ -2547,8 +2709,7 @@
 				}else{
 					ret.put("result",0);//already have avatar 
 				}
-			}
-			
+			}			
 		}
 		
 		out.print(ret.toString());

@@ -114,6 +114,8 @@
 				data.put("totalcount", tmp.totalcount);
 				data.put("director", tmp.diretor);
 				data.put("viewcount", viewcount);
+				data.put("engname",tmp.engname);
+				data.put("comment",tmp.comment);
 				retlist.add(data);
 			}
 			timeInObj.put("Story", retlist);

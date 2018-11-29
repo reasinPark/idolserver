@@ -56,7 +56,7 @@
 					
 					// 2.컬럼 갯수 체크, 현재 데이터는 맨 윗 줄 컬럼 제목 데이터.
 					if(i == 0) {
-						pstmt = conn.prepareStatement("select count(*) from information_schema.columns where table_name = 'SelectItem'");
+						pstmt = conn.prepareStatement("select count(*) from information_schema.columns where table_name = 'SelectItem'  and table_schema = 'idol'");
 						rs = pstmt.executeQuery();
 						
 						if(rs.next()) {
@@ -94,13 +94,13 @@
 					else {
 						int index = 1;
 						
-						pstmt = conn.prepareStatement("insert into SelectItem (selectid,price,storyid,epinum) values(?,?,?,?)");
+						pstmt = conn.prepareStatement("insert into SelectItem (selectid,price,storyid,epinum,cool,hot,cute,fashion) values(?,?,?,?,?,?,?,?)");
 						
 						for (String output: token) {
 							output = output.replaceAll("\"", "");
 							
 							// int
-							if(index == 1 || index == 2 || index == 4) {
+							if(index == 1 || index == 2 || index == 4 || index == 5 || index == 6 || index == 7 || index == 8) {
 								pstmt.setInt(index, Integer.parseInt(output));
 							}
 							// string

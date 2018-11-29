@@ -33,8 +33,12 @@
 			int adpasscount = Integer.parseInt(request.getParameter("adpasscount"));
 			int active = Integer.parseInt(request.getParameter("active"));
 			int existinguid = Integer.parseInt(request.getParameter("existinguid"));
+			int cool = Integer.parseInt(request.getParameter("cool"));
+			int hot = Integer.parseInt(request.getParameter("hot"));
+			int cute = Integer.parseInt(request.getParameter("cute"));
+			int fashion = Integer.parseInt(request.getParameter("fashion"));
 			pstmt = conn.prepareStatement("update user set freeticket = ?, ticketgentime = ?, cashticket = ?, freegem = ?, cashgem = ?, service = ?, lastjointime = ?, firstbuy = ?, logincontinue = ?, adpass = ?"+
-					", adpasscount = ?, active = ?, existinguid = ? where uid = ?");
+					", adpasscount = ?, active = ?, existinguid = ?,cool = ?, hot = ?, cute = ?, fashion = ? where uid = ?");
 			pstmt.setInt(1, freeticket);
 			pstmt.setString(2, tickettime);
 			pstmt.setInt(3, cashticket);
@@ -48,7 +52,11 @@
 			pstmt.setInt(11, adpasscount);
 			pstmt.setInt(12, active);
 			pstmt.setInt(13, existinguid);
-			pstmt.setString(14, uid);
+			pstmt.setInt(14, cool);
+			pstmt.setInt(15, hot);
+			pstmt.setInt(16, cute);
+			pstmt.setInt(17, fashion);
+			pstmt.setString(18, uid);
 			if(pstmt.executeUpdate() == 1){
 				%>업데이트 되었습니다.<%
 			}else{

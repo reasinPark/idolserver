@@ -35,6 +35,10 @@
 		int adpasscount = 0;
 		int active = 0;
 		int existinguid = 0;
+		int cool = 0;
+		int hot = 0;
+		int cute = 0;
+		int fashion = 0;
 		
 		boolean isFound = false;
 		String uid = request.getParameter("uid");
@@ -42,7 +46,7 @@
 		if(uid!=null){
 			pstmt = conn.prepareStatement("select freeticket,ticketgentime,DATE_FORMAT(ticketgentime,'%Y-%m-%d %H:%i:%s')"+ 
 					",cashticket,freegem,cashgem,service,lastjointime,DATE_FORMAT(lastjointime,'%Y-%m-%d %H:%i:%s')"+
-					",firstbuy,logincontinue,adpass,DATE_FORMAT(adpass,'%Y-%m-%d %H:%i:%s'),adpasscount,active,existinguid from user where uid = ?");
+					",firstbuy,logincontinue,adpass,DATE_FORMAT(adpass,'%Y-%m-%d %H:%i:%s'),adpasscount,active,existinguid,cool,hot,cute,fashion from user where uid = ?");
 			pstmt.setString(1, uid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -62,6 +66,10 @@
 				adpasscount = rs.getInt(14);
 				active = rs.getInt(15);
 				existinguid = rs.getInt(16);
+				cool = rs.getInt(17);
+				hot = rs.getInt(18);
+				cute = rs.getInt(19);
+				fashion = rs.getInt(20);
 				isFound = true;
 			}else{
 				%>
@@ -112,6 +120,10 @@
 					<td>광고 구매여부</td>
 					<td>Active</td>
 					<td>ExistingUid</td>
+					<td>Cool</td>
+					<td>Hot</td>
+					<td>Cute</td>
+					<td>Fashion</td>
 				</tr>
 				<tr>
 					<td><input type="text" name="freeticket" size="20" value="<%=((isFound)? String.valueOf(freeticket): "") %>">
@@ -127,6 +139,10 @@
 					<td><input type="text" name="adpasscount" size="20" value="<%=((isFound)? String.valueOf(adpasscount): "") %>">
 					<td><input type="text" name="active" size="20" value="<%=((isFound)? String.valueOf(active): "") %>">
 					<td><input type="text" name="existinguid" size="20" value="<%=((isFound)? String.valueOf(existinguid): "") %>">
+					<td><input type="text" name="cool" size="20" value="<%=((isFound)? String.valueOf(cool): "") %>">
+					<td><input type="text" name="hot" size="20" value="<%=((isFound)? String.valueOf(hot): "") %>">
+					<td><input type="text" name="cute" size="20" value="<%=((isFound)? String.valueOf(cute): "") %>">
+					<td><input type="text" name="fashion" size="20" value="<%=((isFound)? String.valueOf(fashion): "") %>">
 				</tr>
 				<tr>
 					<td colspan="10" align="center"><input type="submit" value="    적용    "></td>

@@ -12,6 +12,10 @@ public class SelectItemData {
 	public String StoryId;
 	public int Price;
 	public int Epinum;
+	public int Cool;
+	public int Hot;
+	public int Cute;
+	public int Fashion;
 	public static int nowversion;
 	
 	private static ArrayList<SelectItemData> list = null;
@@ -27,22 +31,26 @@ public class SelectItemData {
 		try{
 			conn = ConnectionProvider.getConnection("idol");
 			
-			pstmt = conn.prepareStatement("select selectid,price,storyid,epinum from SelectItem");
+			pstmt = conn.prepareStatement("select selectid,price,storyid,epinum,cool,hot,cute,fashion from SelectItem");
 			
 			rs = pstmt.executeQuery();
 			System.out.println("get select item");
 			while(rs.next()){
 				int idx = 1;
 				SelectItemData data = new SelectItemData();
-				System.out.println("get select item in to while");
+//				System.out.println("get select item in to while");
 				data.SelectId = rs.getInt(idx++);
-				System.out.println("test sel id "+data.SelectId);
+//				System.out.println("test sel id "+data.SelectId);
 				data.Price = rs.getInt(idx++);
-				System.out.println("price is :"+data.Price);
+//				System.out.println("price is :"+data.Price);
 				data.StoryId = rs.getString(idx++);
-				System.out.println("story id is :"+data.StoryId);
+//				System.out.println("story id is :"+data.StoryId);
 				data.Epinum = rs.getInt(idx++);
-				System.out.println("data from class cash is :"+data.SelectId+","+data.Price+", "+data.StoryId+","+data.Epinum);
+//				System.out.println("data from class cash is :"+data.SelectId+","+data.Price+", "+data.StoryId+","+data.Epinum);
+				data.Cool = rs.getInt(idx++);
+				data.Hot = rs.getInt(idx++);
+				data.Cute = rs.getInt(idx++);
+				data.Fashion = rs.getInt(idx++);
 				list.add(data);
 			}
 		}finally{

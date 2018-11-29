@@ -55,7 +55,7 @@
 					
 					// 2.컬럼 갯수 체크, 현재 데이터는 맨 윗 줄 컬럼 제목 데이터.
 					if(i == 0) {
-						pstmt = conn.prepareStatement("select count(*) from information_schema.columns where table_name = 'attendEvent'");
+						pstmt = conn.prepareStatement("select count(*) from information_schema.columns where table_name = 'attendEvent'  and table_schema = 'idol'");
 						rs = pstmt.executeQuery();
 						
 						if(rs.next()) {
