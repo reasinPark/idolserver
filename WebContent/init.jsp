@@ -15,6 +15,7 @@
 <%@ page import="com.wingsinus.ep.StoryManager" %>
 <%@ page import="com.wingsinus.ep.CategoryList" %>
 <%@ page import="com.wingsinus.ep.EpisodeList" %>
+<%@ page import="com.wingsinus.ep.SpecialEpisodeManager" %>
 <%@ page import="com.wingsinus.ep.CostumeData" %>
 <%@ page import="com.wingsinus.ep.BannerManager" %>
 <%@ page import="com.wingsinus.ep.LogManager" %>
@@ -26,6 +27,16 @@
 <%@ page import="com.wingsinus.ep.SelectItemData" %>
 <%@ page import="com.wingsinus.ep.TutorialList" %>
 <%@ page import="com.wingsinus.ep.RouletteTable" %>
+<%@ page import="com.wingsinus.ep.PhotobookData" %>
+<%@ page import="com.wingsinus.ep.PhotopageData" %>
+<%@ page import="com.wingsinus.ep.PhotoEffectListData" %>
+<%@ page import="com.wingsinus.ep.PhotoEffectData" %>
+<%@ page import="com.wingsinus.ep.PhotoPoseListData" %>
+<%@ page import="com.wingsinus.ep.PhotoPoseData" %>
+<%@ page import="com.wingsinus.ep.PhotoDressListData" %>
+<%@ page import="com.wingsinus.ep.PhotoDressData" %>
+<%@ page import="com.wingsinus.ep.PhotoFaceListData" %>
+<%@ page import="com.wingsinus.ep.PhotoFaceData" %>
 <%@ page import="com.wingsinus.ep.Module" %>
 <%@ page import="com.wingsinus.ep.AttendRewardInfo" %>
 
@@ -173,6 +184,7 @@
 								data.put("likecount", tmpE.likecount);
 								data.put("summary", tmpE.summary);
 								data.put("subtitle", tmpE.subtitle);
+								data.put("specialid",tmpE.specialid);
 								elist.add(data);
 							}
 							System.out.println("start banner manager");
@@ -197,6 +209,11 @@
 								data.put("price",selmpS.Price);
 								data.put("storyid",selmpS.StoryId);
 								data.put("epinum",selmpS.Epinum);
+								data.put("cool",selmpS.Cool);
+								data.put("hot",selmpS.Hot);
+								data.put("cute",selmpS.Cute);
+								data.put("fashion",selmpS.Fashion);
+								data.put("costumeid",selmpS.costumeid);
 								sellist.add(data);
 							}
 							
@@ -309,6 +326,28 @@
 			
 			ItemDataManager.CheckStoryversion(Storyversion);
 			
+			SpecialEpisodeManager.CheckStoryversion(Storyversion);
+			
+			PhotobookData.CheckStoryversion(Storyversion);
+			
+			PhotopageData.CheckStoryversion(Storyversion);
+			
+			PhotoEffectListData.CheckStoryversion(Storyversion);
+			
+			PhotoEffectData.CheckStoryversion(Storyversion);
+			
+			PhotoPoseListData.CheckStoryversion(Storyversion);
+			
+			PhotoPoseData.CheckStoryversion(Storyversion);
+			
+			PhotoDressListData.CheckStoryversion(Storyversion);
+			
+			PhotoDressData.CheckStoryversion(Storyversion);
+			
+			PhotoFaceListData.CheckStoryversion(Storyversion);
+			
+			PhotoFaceData.CheckStoryversion(Storyversion);
+						
 			JSONArray jlist = new JSONArray();
 			JSONArray elist = new JSONArray();
 			JSONArray blist = new JSONArray();
@@ -319,6 +358,18 @@
 			JSONArray slist = new JSONArray();
 			JSONArray sellist = new JSONArray();
 			JSONArray ilist = new JSONArray(); // itemdata list
+			JSONArray selist = new JSONArray(); // specialEpisode	
+			
+			JSONArray pblist = new JSONArray(); //photo book data
+			JSONArray pplist = new JSONArray(); //photo page data
+			JSONArray pelistdata = new JSONArray(); //photo effect list data
+			JSONArray pedata = new JSONArray(); // photo effect data
+			JSONArray pplistdata = new JSONArray(); // photo pose list data
+			JSONArray ppdata = new JSONArray(); // photo pose data
+			JSONArray pdlistdata = new JSONArray(); // photo dress list data
+			JSONArray pddata = new JSONArray(); // photo dress data
+			JSONArray pflistdata = new JSONArray(); // photo face list data
+			JSONArray pfdata = new JSONArray(); // photo face data
 			
 			rs = pstmt.executeQuery();
 			System.out.println("rs count "+userid);
@@ -407,8 +458,29 @@
 					data.put("likecount", tmpE.likecount);
 					data.put("summary", tmpE.summary);
 					data.put("subtitle", tmpE.subtitle);
+					data.put("specialid",tmpE.specialid);
+					data.put("sortnum",tmpE.sortnum);
 					elist.add(data);
 				}
+				
+				ArrayList<SpecialEpisodeManager> semp = SpecialEpisodeManager.getDataAll();
+				for(int i=0;i<semp.size();i++){					
+					SpecialEpisodeManager tmpSE = semp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("specialid", tmpSE.Specialid);
+					data.put("epcondition",tmpSE.epcondition);
+					data.put("stcondition",tmpSE.stcondition);
+					data.put("cool",tmpSE.cool);
+					data.put("hot",tmpSE.hot);
+					data.put("cute",tmpSE.cute);
+					data.put("texture1",tmpSE.texture1);
+					data.put("texture2",tmpSE.texture2);
+					data.put("texture3",tmpSE.texture3);
+					data.put("detailtitle",tmpSE.detailtitle);
+					data.put("detailcontent",tmpSE.detailcontent);
+					selist.add(data);
+				}
+				
 				System.out.println("start banner manager in login");
 				ArrayList<BannerManager> bmp = BannerManager.getDataAll();
 				for(int i=0;i<bmp.size();i++){
@@ -435,6 +507,7 @@
 					data.put("hot",smp.Hot);
 					data.put("cute",smp.Cute);
 					data.put("fashion",smp.Fashion);
+					data.put("costumeid",smp.costumeid);
 					System.out.println("data is :"+smp.SelectId+","+smp.Epinum);
 					sellist.add(data);
 				}
@@ -449,6 +522,136 @@
 					data.put("storyid",imp.Story_id);
 					data.put("img",imp.img);
 					ilist.add(data);
+				}
+				
+				//photo book data
+				ArrayList<PhotobookData> pbdtmp = PhotobookData.getDataAll();
+				for(int i=0;i<pbdtmp.size();i++){
+					PhotobookData dmp = pbdtmp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("photobookid", dmp.photobookid);
+					data.put("photobookname",dmp.photobookname);
+					data.put("col1",dmp.col1);
+					data.put("col1content",dmp.col1content);
+					data.put("col2",dmp.col2);
+					data.put("col2content",dmp.col2content);
+					data.put("col3",dmp.col3);
+					data.put("col3content",dmp.col3content);
+					data.put("col4",dmp.col4);
+					data.put("col4content",dmp.col4content);
+					data.put("col5",dmp.col5);
+					data.put("col5content",dmp.col5content);
+					data.put("photopage1id", dmp.photopage1id);
+					data.put("photopage2id", dmp.photopage2id);
+					data.put("photopage3id",dmp.photopage3id);
+					pblist.add(data);
+				}
+				
+				//photo page data
+				ArrayList<PhotopageData> ppdtmp = PhotopageData.getDataAll();
+				for(int i=0;i<ppdtmp.size();i++){
+					PhotopageData dmp = ppdtmp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("photopageid",dmp.photopageid);
+					data.put("thumbnail",dmp.thumbnail);
+					data.put("mainimg",dmp.mainimg);
+					data.put("name",dmp.name);
+					pplist.add(data);
+				}
+				
+				//photo effect list data
+				ArrayList<PhotoEffectListData> peldtmp = PhotoEffectListData.getDataAll();
+				for(int i=0;i<peldtmp.size();i++){
+					PhotoEffectListData dmp = peldtmp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("photopageid",dmp.photopageid);
+					data.put("photoeffectid",dmp.photoeffectid);
+					pelistdata.add(data);
+				}
+				
+				//photo effect data
+				ArrayList<PhotoEffectData> pedtmp = PhotoEffectData.getDataAll();
+				for(int i=0;i<pedtmp.size();i++){
+					PhotoEffectData dmp = pedtmp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("photoeffectid",dmp.photoeffectid);
+					data.put("photoeffectname",dmp.photoeffectname);
+					data.put("thumbnail",dmp.thumbnail);
+					data.put("type",dmp.type);
+					data.put("objname",dmp.objname);
+					pedata.add(data);
+				}
+				
+				//photo pose list data
+				ArrayList<PhotoPoseListData> ppldtmp = PhotoPoseListData.getDataAll();
+				for(int i=0;i<ppldtmp.size();i++){
+					PhotoPoseListData dmp = ppldtmp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("photopageid",dmp.photopageid);
+					data.put("photoposeid",dmp.photoposeid);
+					pplistdata.add(data);
+				}
+				
+				//photo pose data
+				ArrayList<PhotoPoseData> ppodtmp = PhotoPoseData.getDataAll();
+				for(int i=0;i<ppodtmp.size();i++){
+					PhotoPoseData dmp = ppodtmp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("photoposeid",dmp.photoposeid);
+					data.put("photoposename",dmp.photoposename);
+					data.put("thumbnail",dmp.thumbnail);
+					data.put("photoposeaniname",dmp.photoposeaniname);
+					ppdata.add(data);
+				}
+				
+				//photo dress list data
+				ArrayList<PhotoDressListData> pdldtmp = PhotoDressListData.getDataAll();
+				for(int i=0;i<pdldtmp.size();i++){
+					PhotoDressListData dmp = pdldtmp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("photopageid",dmp.photopageid);
+					data.put("photodressid",dmp.photodressid);
+					pdlistdata.add(data);
+				}
+				
+				//photo dress data
+				ArrayList<PhotoDressData> pddtmp = PhotoDressData.getDataAll();
+				for(int i=0;i<pddtmp.size();i++){
+					PhotoDressData dmp = pddtmp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("photodressid", dmp.photodressid);
+					data.put("photodressname",dmp.photodressname);
+					data.put("thumbnail",dmp.thumbnail);
+					data.put("pdbodyfile",dmp.pdbodyfile);
+					data.put("pdbodyskin",dmp.pdbodyskin);
+					data.put("pdheadfile",dmp.pdheadfile);
+					data.put("pdheadskin",dmp.pdheadskin);
+					data.put("pdhairfile",dmp.pdhairfile);
+					data.put("pdhairskin",dmp.pdhairskin);
+					data.put("selectitemid",dmp.selectitemid);
+					pddata.add(data);
+				}
+				
+				//photo face list data
+				ArrayList<PhotoFaceListData> pfldtmp = PhotoFaceListData.getDataAll();
+				for(int i=0;i<pfldtmp.size();i++){
+					PhotoFaceListData dmp = pfldtmp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("photopageid",dmp.photopageid);
+					data.put("photofaceid",dmp.photofaceid);
+					pflistdata.add(data);
+				}
+				
+				//photo face data
+				ArrayList<PhotoFaceData> pfdtmp = PhotoFaceData.getDataAll();
+				for(int i=0;i<pfdtmp.size();i++){
+					PhotoFaceData dmp = pfdtmp.get(i);
+					JSONObject data = new JSONObject();
+					data.put("photofaceid",dmp.photofaceid);
+					data.put("photofacename", dmp.photofacename);
+					data.put("thumbnail",dmp.thumbnail);
+					data.put("photofaceaniname",dmp.photofaceaniname);
+					pfdata.add(data);
 				}
 				
 				// chdata, chlist, obdata, soundtable 를 서버에서 받아오기.
@@ -554,6 +757,18 @@
 				data.put("BuyNum",rs.getInt(4));
 				data.put("LikeNum", rs.getInt(5));
 				storylist.add(data);
+			}
+			
+			System.out.println("start user special episode");
+			//유저가 보유한 스페셜 이야기 정보 로드 
+			pstmt = conn.prepareStatement("select specialid from user_spepisode where uid = ?");
+			pstmt.setString(1, userid);
+			JSONArray spstorylist = new JSONArray();
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("SpecialID", rs.getInt(1));
+				spstorylist.add(data);
 			}
 			
 			System.out.println("start user name in login");
@@ -726,14 +941,27 @@
 			ret.put("userrentalbooklist",prlist);
 			ret.put("itemdatalist",ilist);
 			
+			ret.put("photobookdata",pblist);
+			ret.put("photopagedata",pplist);
+			ret.put("photoeffectlistdata",pelistdata);
+			ret.put("photoeffectdata",pedata);
+			ret.put("photoposelistdata",pplistdata);
+			ret.put("photoposedata",ppdata);
+			ret.put("photodresslistdata",pdlistdata);
+			ret.put("photodressdata",pddata);
+			ret.put("photofacelistdata",pflistdata);
+			ret.put("photofacedata",pfdata);
+			
 			ret.put("userstorylikelist", likelist);
 			ret.put("userselectlist",selectlist);
 			ret.put("namelist",namelist);
 			ret.put("userstorylist",storylist);
+			ret.put("userspstorylist",spstorylist);
 			ret.put("userskinlist",skinlist);
 			ret.put("costumelist",clist);
 			ret.put("bannerlist", blist);
 			ret.put("episodelist",elist);
+			ret.put("specialepisodelist",selist);
 			ret.put("categorylist",jlist);
 			ret.put("selectitemlist",sellist);
 			ret.put("ticket", ticket);
@@ -1361,7 +1589,7 @@
 							int oriticket = freeticket +cashticket;
 							ret.put("myticket", myticket);
 							
-							if (oriticket <= 10) {
+							if (oriticket <= 5) {
 								String qry = "";
 								qry = "update user set ticketgentime = now() where uid = ?";
 								pstmt = conn.prepareStatement(qry);
@@ -1529,6 +1757,199 @@
 						pstmt.setInt(4,episodenum);
 						
 						if(pstmt.executeUpdate()==1){
+							//유저 코스츔 정보 추가
+							//코스츔이 있는지 확인 
+							//이미 가지고 있는 코스츔인지 확인
+							if(data.costumeid>0){
+
+								pstmt = conn.prepareStatement("select CostumeId from user_skindata where uid = ? and CostumeId = ?");
+								pstmt.setString(1, userid);
+								pstmt.setInt(2, data.costumeid);
+								rs = pstmt.executeQuery();
+								if(rs.next()){
+									ret.put("already",2);
+								}else{
+									CostumeData cosData = CostumeData.getData(data.costumeid);
+									pstmt = conn.prepareStatement("insert into user_skindata (CostumeId,buy_date,use_rcash,uid,charid) values(?,now(),0,?,?)");
+									pstmt.setInt(1, data.costumeid);
+									pstmt.setString(2, userid);
+									pstmt.setString(3, cosData.ChId);
+									if(pstmt.executeUpdate()==1){
+
+										//get user_selectitem
+										//유저 선택지 구매 정보 로드
+										pstmt = conn.prepareStatement("select selectid,storyid,epinum from user_selectitem where uid = ?");
+										pstmt.setString(1,userid);
+										rs = pstmt.executeQuery();
+										JSONArray selectlist = new JSONArray();
+										while(rs.next()){
+											JSONObject sdata = new JSONObject();
+											sdata.put("selectid", rs.getInt(1));
+											sdata.put("storyid",rs.getString(2));
+											sdata.put("epinum", rs.getInt(3));
+											System.out.println("my data is :"+rs.getInt(1)+", "+rs.getString(2)+","+rs.getInt(3));
+											selectlist.add(sdata);
+										}
+										LogManager.writeNorLog(userid,"success_write_userchoice",cmd,Storyid,String.valueOf(episodenum),data.Price);
+										
+										pstmt = conn.prepareStatement("select cool,hot,cute,fashion from user where uid = ?");
+										pstmt.setString(1, userid);
+										rs = pstmt.executeQuery();
+										int ucool = 0;
+										int ucute = 0;
+										int ufashion = 0;
+										int uhot = 0;
+										if(rs.next()){
+											ucool = rs.getInt(1);
+											uhot = rs.getInt(2);
+											ucute = rs.getInt(3);
+											ufashion = rs.getInt(4);
+										}
+										//유저 코스츔 구매 정보 로드
+										pstmt = conn.prepareStatement("select CostumeId, charid, equip from user_skindata where uid = ?");
+										pstmt.setString(1, userid);
+										JSONArray skinlist = new JSONArray();
+										rs = pstmt.executeQuery();
+										while(rs.next()){
+											JSONObject cdata = new JSONObject();
+											cdata.put("costumeid",rs.getString(1));
+											cdata.put("charid",rs.getString(2));
+											cdata.put("equip",rs.getString(3));
+											skinlist.add(cdata);
+										}
+										
+										ret.put("userskinlist",skinlist);
+										ret.put("cool", ucool);
+										ret.put("cute",ucute);
+										ret.put("hot",uhot);
+										ret.put("fashion",ufashion);
+										ret.put("userselectlist",selectlist);
+										ret.put("result",1);
+									}else{
+										ret.put("result",2);
+										LogManager.writeNorLog(userid,"fail_cos_choice",cmd,"null","null",0);
+									}
+								}
+							}else{
+								//get user_selectitem
+								//유저 선택지 구매 정보 로드
+								pstmt = conn.prepareStatement("select selectid,storyid,epinum from user_selectitem where uid = ?");
+								pstmt.setString(1,userid);
+								rs = pstmt.executeQuery();
+								JSONArray selectlist = new JSONArray();
+								while(rs.next()){
+									JSONObject sdata = new JSONObject();
+									sdata.put("selectid", rs.getInt(1));
+									sdata.put("storyid",rs.getString(2));
+									sdata.put("epinum", rs.getInt(3));
+									System.out.println("my data is :"+rs.getInt(1)+", "+rs.getString(2)+","+rs.getInt(3));
+									selectlist.add(sdata);
+								}
+								LogManager.writeNorLog(userid,"success_write_userchoice",cmd,Storyid,String.valueOf(episodenum),data.Price);
+								
+								pstmt = conn.prepareStatement("select cool,hot,cute,fashion from user where uid = ?");
+								pstmt.setString(1, userid);
+								rs = pstmt.executeQuery();
+								int ucool = 0;
+								int ucute = 0;
+								int ufashion = 0;
+								int uhot = 0;
+								if(rs.next()){
+									ucool = rs.getInt(1);
+									uhot = rs.getInt(2);
+									ucute = rs.getInt(3);
+									ufashion = rs.getInt(4);
+								}
+								//유저 코스츔 구매 정보 로드
+								pstmt = conn.prepareStatement("select CostumeId, charid, equip from user_skindata where uid = ?");
+								pstmt.setString(1, userid);
+								JSONArray skinlist = new JSONArray();
+								rs = pstmt.executeQuery();
+								while(rs.next()){
+									JSONObject cdata = new JSONObject();
+									cdata.put("costumeid",rs.getString(1));
+									cdata.put("charid",rs.getString(2));
+									cdata.put("equip",rs.getString(3));
+									skinlist.add(cdata);
+								}
+								
+								ret.put("userskinlist",skinlist);
+								ret.put("cool", ucool);
+								ret.put("cute",ucute);
+								ret.put("hot",uhot);
+								ret.put("fashion",ufashion);
+								ret.put("userselectlist",selectlist);
+								ret.put("result",1);
+							}
+							/* pstmt = conn.prepareStatement("select CostumeId from user_skindata where uid = ? and CostumeId = ?");
+							pstmt.setString(1, userid);
+							pstmt.setInt(2, data.costumeid);
+							rs = pstmt.executeQuery();
+							if(rs.next()){
+								ret.put("already",2);
+							}else{
+								CostumeData cosData = CostumeData.getData(data.costumeid);
+								pstmt = conn.prepareStatement("insert into user_skindata (CostumeId,buy_date,use_rcash,uid,charid) values(?,now(),0,?,?)");
+								pstmt.setInt(1, data.costumeid);
+								pstmt.setString(2, userid);
+								pstmt.setString(3, cosData.ChId);
+								if(pstmt.executeUpdate()==1){
+
+									//get user_selectitem
+									//유저 선택지 구매 정보 로드
+									pstmt = conn.prepareStatement("select selectid,storyid,epinum from user_selectitem where uid = ?");
+									pstmt.setString(1,userid);
+									rs = pstmt.executeQuery();
+									JSONArray selectlist = new JSONArray();
+									while(rs.next()){
+										JSONObject sdata = new JSONObject();
+										sdata.put("selectid", rs.getInt(1));
+										sdata.put("storyid",rs.getString(2));
+										sdata.put("epinum", rs.getInt(3));
+										System.out.println("my data is :"+rs.getInt(1)+", "+rs.getString(2)+","+rs.getInt(3));
+										selectlist.add(sdata);
+									}
+									LogManager.writeNorLog(userid,"success_write_userchoice",cmd,Storyid,String.valueOf(episodenum),data.Price);
+									
+									pstmt = conn.prepareStatement("select cool,hot,cute,fashion from user where uid = ?");
+									pstmt.setString(1, userid);
+									rs = pstmt.executeQuery();
+									int ucool = 0;
+									int ucute = 0;
+									int ufashion = 0;
+									int uhot = 0;
+									if(rs.next()){
+										ucool = rs.getInt(1);
+										uhot = rs.getInt(2);
+										ucute = rs.getInt(3);
+										ufashion = rs.getInt(4);
+									}
+									//유저 코스츔 구매 정보 로드
+									pstmt = conn.prepareStatement("select CostumeId, charid, equip from user_skindata where uid = ?");
+									pstmt.setString(1, userid);
+									JSONArray skinlist = new JSONArray();
+									rs = pstmt.executeQuery();
+									while(rs.next()){
+										JSONObject cdata = new JSONObject();
+										cdata.put("costumeid",rs.getString(1));
+										cdata.put("charid",rs.getString(2));
+										cdata.put("equip",rs.getString(3));
+										skinlist.add(cdata);
+									}
+									
+									ret.put("userskinlist",skinlist);
+									ret.put("cool", ucool);
+									ret.put("cute",ucute);
+									ret.put("hot",uhot);
+									ret.put("fashion",ufashion);
+									ret.put("userselectlist",selectlist);
+									ret.put("result",1);
+								}else{
+									ret.put("result",2);
+									LogManager.writeNorLog(userid,"fail_cos_choice",cmd,"null","null",0);
+								}
+							}		 */					
+							/* 
 							//get user_selectitem
 							//유저 선택지 구매 정보 로드
 							pstmt = conn.prepareStatement("select selectid,storyid,epinum from user_selectitem where uid = ?");
@@ -1564,7 +1985,7 @@
 							ret.put("fashion",ufashion);
 							ret.put("userselectlist",selectlist);
 							ret.put("result",1);
-							
+							 */
 						}else{
 							ret.put("result",2);
 							LogManager.writeNorLog(userid,"fail_buy_choice",cmd,"null","null",0);
@@ -1601,12 +2022,12 @@
 				myticket = rs.getInt(3)+rs.getInt(4);
 				lastGenTime = rs.getTimestamp(5).getTime()/1000;
 				
-				if(myticket<10){
+				if(myticket<5){
 					if(lastGenTime<ticketGenTime)lastGenTime=ticketGenTime;
 					needcharge = (int)(now - lastGenTime)/(60*60*8);
 					System.out.println("need charge is :"+needcharge+", "+myticket);
-					if(needcharge+myticket>10)needcharge = 10-myticket;
-					if(needcharge>0&&needcharge+myticket<=10){
+					if(needcharge+myticket>5)needcharge = 5-myticket;
+					if(needcharge>0&&needcharge+myticket<=5){
 						pstmt = conn.prepareStatement("update user set freeticket = freeticket + ? , lastgentime = date_add(ticketgentime, interval ? hour) where uid = ?");
 						pstmt.setInt(1,needcharge);
 						pstmt.setInt(2,needcharge*8);
@@ -2706,10 +3127,158 @@
 					pstmt.setString(3,userid);
 					int result = pstmt.executeUpdate();
 					ret.put("result",result);
+					LogManager.writeNorLog(userid, "make_success", cmd, "null", "null", avatarnum);
 				}else{
 					ret.put("result",0);//already have avatar 
+					LogManager.writeNorLog(userid, "make_fail", cmd, "already", "null", avatarnum);
 				}
 			}			
+		}
+		else if(cmd.equals("buyspepisode")){
+			//유저 아이디와 구매하려는 스토리 아이디 에피소드 아이디를 받는다.
+			int spid = Integer.valueOf(request.getParameter("specialid"));
+			
+			//보유 체크
+			boolean isntHave = true;
+			pstmt = conn.prepareStatement("select count(*) from user_spepisode where uid = ? and specialid = ?");
+			pstmt.setString(1, userid);
+			pstmt.setInt(2, spid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()){
+				if(rs.getInt(1)>0){
+					isntHave = false;
+				}
+			}
+			
+			if(isntHave){
+				
+				//조건 체크
+				//조건 정보 가져오기
+				//유저 조건 체크 //추후에 패키지 정보 확인 추가 
+				SpecialEpisodeManager spdata = SpecialEpisodeManager.getData(spid);
+				boolean conditionok = false;
+				pstmt = conn.prepareStatement("select count(*) from user_story where uid = ? and Story_id = ? and Episode_num >= ?");
+				pstmt.setString(1, userid);
+				pstmt.setString(2, spdata.stcondition);
+				pstmt.setInt(3, spdata.epcondition);
+				
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()){
+					if(rs.getInt(1)>0){
+						conditionok = true;
+					}
+				}			
+				//젬포인트  소모
+				//유저 젬 보유량 가져오기
+				//소모 젬 양 체크
+				boolean isbuyok = false;
+				boolean canbuyok = false;
+				int ucool = 0;
+				int uhot = 0;
+				int ucute = 0;
+				pstmt = conn.prepareStatement("select cool, hot, cute from user where uid = ?");
+				pstmt.setString(1, userid);
+				
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()){
+					ucool = rs.getInt(1);
+					uhot = rs.getInt(2);
+					ucute = rs.getInt(3);
+				}
+				if(ucool>=spdata.cool&&uhot>=spdata.hot&&ucute>=spdata.cute)canbuyok = true;
+				System.out.println("canbuy ok is :"+canbuyok+", "+conditionok);
+				if(conditionok&&canbuyok){
+					pstmt = conn.prepareStatement("update user set cool = cool - ?, hot = hot - ?, cute = cute - ? where uid = ?");
+					pstmt.setInt(1, spdata.cool);
+					pstmt.setInt(2, spdata.hot);
+					pstmt.setInt(3, spdata.cute);
+					pstmt.setString(4, userid);
+					if(pstmt.executeUpdate()>0){
+						isbuyok = true;
+					}
+					//logging
+					LogManager.writeNorLog(userid, "usegem_success", cmd, "null", "null", spid);
+				}else{
+					// 젬 포인트 부족으로 구매 실패
+					ret.put("result",0);
+					if(!conditionok){
+						ret.put("already",2);
+					}
+					//logging
+					LogManager.writeNorLog(userid, "usegem_fail", cmd, "null", "null", spid);
+				}
+
+				//구매 기록 
+				if(isbuyok){
+					pstmt = conn.prepareStatement("insert into user_spepisode (uid,specialid,view_date) values(?,?,now())");
+					pstmt.setString(1, userid);
+					pstmt.setInt(2, spid);
+					if(pstmt.executeUpdate()>0){
+						//구매 성공 
+						
+						//유저 정보 갱신
+						pstmt = conn.prepareStatement("select cool, hot, cute from user where uid = ?");
+						pstmt.setString(1, userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("cool",rs.getInt(1));
+							ret.put("hot",rs.getInt(2));
+							ret.put("cute",rs.getInt(3));
+						}
+						
+						//유저 스페셜 에피소드 정보 갱신 
+						System.out.println("start user special episode");
+						//유저가 보유한 스페셜 이야기 정보 로드 
+						pstmt = conn.prepareStatement("select specialid from user_spepisode where uid = ?");
+						pstmt.setString(1, userid);
+						JSONArray spstorylist = new JSONArray();
+						rs = pstmt.executeQuery();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("SpecialID", rs.getInt(1));
+							spstorylist.add(data);
+						}
+						
+						
+						ret.put("specialstorylist",spstorylist);
+						ret.put("result",1);
+						LogManager.writeNorLog(userid, "buysp_success", cmd, "null", "null", spid);
+					}else{
+						//역시 에러로 인한 구매 실패 
+						ret.put("result",2);
+						LogManager.writeNorLog(userid, "buysp_fail", cmd, "null", "null", spid);
+					}
+					//logging
+				}else{
+					if(canbuyok){
+						// 에러로 인한 구매 실패 
+						ret.put("result",2);
+						//logging
+						LogManager.writeNorLog(userid, "buysp_fail", cmd, "null", "null", spid);
+					}else{
+						// 젬 포인트 부족으로 구매 실패
+						ret.put("result",0);
+						if(!conditionok){
+							//컨디션 부족으로 인한 구매 실패 
+							ret.put("already",2);
+						}
+						//logging
+						LogManager.writeNorLog(userid, "usegem_fail", cmd, "null", "null", spid);
+					}
+				}
+				/* ret.put("already",0); */
+			}else{
+				ret.put("already",1);
+				ret.put("result",1);
+			}
+		}else if(cmd.equals("endspepisode")){
+			//보유 체크
+			//다 읽음 기록
+			//종료전달 - 의미 없음
 		}
 		
 		out.print(ret.toString());

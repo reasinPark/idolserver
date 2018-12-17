@@ -33,7 +33,7 @@
 	try {
 		Connection conn = ConnectionProvider.getConnection("idol");
 		PreparedStatement pstmt = conn.prepareStatement("select Story_id, episode_num, episode_name, csvfilename, ticket, gem, purchaseinfo, reward_gem, " +
-														"reward_ticket, rewardinfo, writer, director, imgname, likecount, summary, subtitle from episode");
+														"reward_ticket, rewardinfo, writer, director, imgname, likecount, summary, subtitle, specialid, sortnum from episode");
 		ResultSet rs = pstmt.executeQuery();
 				
 		%>
@@ -56,6 +56,8 @@
 				<td>likecount</td>
 				<td>summary</td>
 				<td>subtitle</td>
+				<td>specialid</td>
+				<td>sortnum</td>
 			</tr>
 		<%
 		while(rs.next()) {
@@ -77,6 +79,8 @@
 				<td><%=String.valueOf(rs.getInt(14))%></td>
 				<td><%=String.valueOf(rs.getString(15))%></td>
 				<td><%=String.valueOf(rs.getString(16))%></td>
+				<td><%=String.valueOf(rs.getInt(17))%></td>
+				<td><%=String.valueOf(rs.getInt(18))%></td>
 			</tr>
 		<%
 		}

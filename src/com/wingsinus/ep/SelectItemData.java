@@ -16,6 +16,7 @@ public class SelectItemData {
 	public int Hot;
 	public int Cute;
 	public int Fashion;
+	public int costumeid;
 	public static int nowversion;
 	
 	private static ArrayList<SelectItemData> list = null;
@@ -31,7 +32,7 @@ public class SelectItemData {
 		try{
 			conn = ConnectionProvider.getConnection("idol");
 			
-			pstmt = conn.prepareStatement("select selectid,price,storyid,epinum,cool,hot,cute,fashion from SelectItem");
+			pstmt = conn.prepareStatement("select selectid,price,storyid,epinum,cool,hot,cute,fashion,costumeid from SelectItem");
 			
 			rs = pstmt.executeQuery();
 			System.out.println("get select item");
@@ -51,6 +52,7 @@ public class SelectItemData {
 				data.Hot = rs.getInt(idx++);
 				data.Cute = rs.getInt(idx++);
 				data.Fashion = rs.getInt(idx++);
+				data.costumeid = rs.getInt(idx++);
 				list.add(data);
 			}
 		}finally{

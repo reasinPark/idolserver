@@ -6,14 +6,14 @@
     
 <H2>&nbsp;&nbsp;&nbsp;&nbsp;csv 파일 적용</H2>
 <section>
-	<H3 style="font-size:100">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;선택지 데이터</H3>
+	<H3 style="font-size:100">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;화보 의상 데이터</H3>
 </section>
 
-<form target="result_frame" action="csvupload_selectitem_update.jsp" method="post" id="item_form" enctype="Multipart/form-data">
+<form target="result_frame" action="csvupload_photodress_update.jsp" method="post" id="item_form" enctype="Multipart/form-data">
 	<table border = "1" style="border-style:solid;">
 		<tr>
-			<td> 적용할 selectitem.csv 파일 </td>
-			<td><input type="file" name="selectitem" /></td>
+			<td> 적용할 photodress.csv 파일 </td>
+			<td><input type="file" name="photodress" /></td>
 		</tr>
 		<tr>
 			<td colspan = "2" align="center">
@@ -32,36 +32,37 @@
 <%
 	try {
 		Connection conn = ConnectionProvider.getConnection("idol");
-		PreparedStatement pstmt = conn.prepareStatement("select selectid, price, storyid, epinum, cool, hot, cute, fashion,costumeid from SelectItem");
+		PreparedStatement pstmt = conn.prepareStatement("select pdid,pdname,thumbnail,pdbodyfile,pdbodyskin,pdheadfile,pdheadskin,pdhairfile,pdhairskin,selectitemid from photodress");
 		ResultSet rs = pstmt.executeQuery();
 				
 		%>
-		<H2 style="font-size:20">&nbsp;&nbsp;&nbsp;&nbsp;현재 DB</H2>
 		<table border="1" style="border-style:solid;">
 			<tr>
-				<td>selectid</td>
-				<td>price</td>
-				<td>storyid</td>
-				<td>epinum</td>
-				<td>cool</td>
-				<td>hot</td>
-				<td>cute</td>
-				<td>fashion</td>
-				<td>costumeid</td>
+				<td>photodressid</td>
+				<td>photodressname</td>
+				<td>thumbnail</td>
+				<td>bodyfile</td>
+				<td>bodyskin</td>
+				<td>headfile</td>
+				<td>headskin</td>
+				<td>hairfile</td>
+				<td>hairskin</td>
+				<td>selectitemid</td>
 			</tr>
 		<%
 		while(rs.next()) {
 		%>
 			<tr>
 				<td><%=String.valueOf(rs.getInt(1))%></td>
-				<td><%=String.valueOf(rs.getInt(2))%></td>
+				<td><%=String.valueOf(rs.getString(2))%></td>
 				<td><%=String.valueOf(rs.getString(3))%></td>
-				<td><%=String.valueOf(rs.getInt(4))%></td>
-				<td><%=String.valueOf(rs.getInt(5))%></td>
-				<td><%=String.valueOf(rs.getInt(6))%></td>
-				<td><%=String.valueOf(rs.getInt(7))%></td>
-				<td><%=String.valueOf(rs.getInt(8))%></td>
-				<td><%=String.valueOf(rs.getInt(9))%></td>
+				<td><%=String.valueOf(rs.getString(4))%></td>
+				<td><%=String.valueOf(rs.getString(5))%></td>
+				<td><%=String.valueOf(rs.getString(6))%></td>
+				<td><%=String.valueOf(rs.getString(7))%></td>
+				<td><%=String.valueOf(rs.getString(8))%></td>
+				<td><%=String.valueOf(rs.getString(9))%></td>
+				<td><%=String.valueOf(rs.getInt(10))%></td>
 			</tr>
 		<%
 		}

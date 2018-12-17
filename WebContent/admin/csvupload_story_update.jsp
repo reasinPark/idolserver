@@ -94,7 +94,7 @@
 					else {
 						int index = 1;
 						
-						pstmt = conn.prepareStatement("insert into story (Story_id,csvfilename,title,writer,summary,category_id,imgname,recommend,totalcount,director,sort,engname,comment) values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+						pstmt = conn.prepareStatement("insert into story (Story_id,csvfilename,title,writer,summary,category_id,imgname,recommend,totalcount,director,sort,engname,comment,col1,col1content,col2,col2content,col3,col3content) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 						
 						for (String output: token) {
 							output = output.replaceAll("\"", "");

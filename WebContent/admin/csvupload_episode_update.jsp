@@ -94,13 +94,13 @@
 					else {
 						int index = 1;
 						
-						pstmt = conn.prepareStatement("insert into episode (Story_id,episode_num,episode_name,csvfilename,ticket,gem,purchaseinfo,reward_gem, reward_ticket, rewardinfo, writer, director, imgname, likecount, summary, subtitle) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+						pstmt = conn.prepareStatement("insert into episode (Story_id,episode_num,episode_name,csvfilename,ticket,gem,purchaseinfo,reward_gem, reward_ticket, rewardinfo, writer, director, imgname, likecount, summary, subtitle, specialid, sortnum) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 						
 						for (String output: token) {
 							output = output.replaceAll("\"", "");
 							
 							// int
-							if(index == 2 || index == 5 || index == 6 || index == 7 || index == 8 || index == 9 || index == 10 || index == 14) {
+							if(index == 2 || index == 5 || index == 6 || index == 7 || index == 8 || index == 9 || index == 10 || index == 14 || index == 17 || index == 18) {
 								pstmt.setInt(index, Integer.parseInt(output));
 							}
 							// string

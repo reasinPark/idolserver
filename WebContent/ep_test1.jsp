@@ -115,7 +115,13 @@
 				data.put("director", tmp.diretor);
 				data.put("viewcount", viewcount);
 				data.put("engname",tmp.engname);
-				data.put("comment",tmp.comment);
+				data.put("comment",tmp.comment);				
+				data.put("col1",tmp.col1);
+				data.put("col1content",tmp.col1content);
+				data.put("col2",tmp.col2);
+				data.put("col2content",tmp.col2content);
+				data.put("col3",tmp.col3);
+				data.put("col3content",tmp.col3content);
 				retlist.add(data);
 			}
 			timeInObj.put("Story", retlist);

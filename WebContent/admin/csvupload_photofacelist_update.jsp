@@ -10,9 +10,8 @@
 <%@ page import="java.io.FileReader" %>
 <%@ page import="java.io.InputStreamReader" %>
 <%@ page import="java.io.FileInputStream" %>
-<%@ page import="com.wingsinus.ep.SelectItemData" %>
 <%
-//configuration
+	//configuration
 	int maxSize = 1024 * 1024 * 10; // 파일 용량을 10M 으로 제한.
 	
 	String filepath = "";
@@ -43,7 +42,7 @@
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(csv), "UTF-8"));
 			
 			// 1.업로드 파일 이름 체크
-			if(csv.toString().equals(filepath+"selectitem.csv")) {
+			if(csv.toString().equals(filepath+"photofacelist.csv")) {
 				
 				String line = "";
 				int i = 0;
@@ -56,7 +55,7 @@
 					
 					// 2.컬럼 갯수 체크, 현재 데이터는 맨 윗 줄 컬럼 제목 데이터.
 					if(i == 0) {
-						pstmt = conn.prepareStatement("select count(*) from information_schema.columns where table_name = 'SelectItem'  and table_schema = 'idol'");
+						pstmt = conn.prepareStatement("select count(*) from information_schema.columns where table_name = 'photofacelist'  and table_schema = 'idol'");
 						rs = pstmt.executeQuery();
 						
 						if(rs.next()) {
@@ -74,7 +73,7 @@
 								break;
 							}
 							else {
-								pstmt = conn.prepareStatement("truncate SelectItem");
+								pstmt = conn.prepareStatement("truncate photofacelist");
 								int r = pstmt.executeUpdate();
 								
 								if(r == 0) {
@@ -94,13 +93,13 @@
 					else {
 						int index = 1;
 						
-						pstmt = conn.prepareStatement("insert into SelectItem (selectid,price,storyid,epinum,cool,hot,cute,fashion,costumeid) values(?,?,?,?,?,?,?,?,?)");
+						pstmt = conn.prepareStatement("insert into photofacelist (photopageid,photofaceid) values(?,?)");
 						
 						for (String output: token) {
 							output = output.replaceAll("\"", "");
 							
 							// int
-							if(index == 1 || index == 2 || index == 4 || index == 5 || index == 6 || index == 7 || index == 8|| index == 9) {
+							if(index == 1 || index == 2) {
 								pstmt.setInt(index, Integer.parseInt(output));
 							}
 							// string
@@ -123,14 +122,14 @@
 				}
 				
 				if(completeCount == i) {
-					out.print("선택지 데이터 적용 완료!"); %> <br> <%
+					out.print("배너 데이터 적용 완료!"); %> <br> <%
 				}
 				else {
-					out.print("선택지 데이터 적용 실패! 확인해주세요."); %> <br> <%
+					out.print("배너 데이터 적용 실패! 확인해주세요."); %> <br> <%
 				}
 			}
 			else {
-				out.print("파일명이 다릅니다. 업로드한 파일이 selectitem.csv가 맞는지 확인해주세요!"); %> <br> <%
+				out.print("파일명이 다릅니다. 업로드한 파일이 photofacelist.csv가 맞는지 확인해주세요!"); %> <br> <%
 				break;
 			}
 			

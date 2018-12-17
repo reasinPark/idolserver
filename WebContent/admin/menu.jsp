@@ -73,7 +73,62 @@
 	</tr>
 	<tr>
 		<td>
+			<a href="csvupload_photobook.jsp" target="content">화보 책 데이터 적용</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="csvupload_photopage.jsp" target="content">화보 페이지 데이터 적용</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="csvupload_photoeffectlist.jsp" target="content">화보 효과 리스트 적용</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="csvupload_photoeffect.jsp" target="content">화보 효과 데이터 적용</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="csvupload_photoposelist.jsp" target="content">화보 포즈 리스트 적용</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="csvupload_photopose.jsp" target="content">화보 포즈 데이터 적용</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="csvupload_photodresslist.jsp" target="content">화보 의상 리스트 적용</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="csvupload_photodress.jsp" target="content">화보 의상 데이터 적용</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="csvupload_photofacelist.jsp" target="content">화보 표정 리스트 적용</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="csvupload_photoface.jsp" target="content">화보 표정 데이터 적용</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="csvupload_episode.jsp" target="content">에피소드 데이터 적용</a>
+		</td>
+	</tr>
+		<tr>
+		<td>
+			<a href="csvupload_specialepisode.jsp" target="content">스페셜에피소드 데이터 적용</a>
 		</td>
 	</tr>
 	<tr>

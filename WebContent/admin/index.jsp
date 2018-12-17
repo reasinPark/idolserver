@@ -12,6 +12,7 @@
 	<frame src="csvupload_banner.jsp" name="content">
 	<frame src="csvupload_story.jsp" name="content">
 	<frame src="csvupload_episode.jsp" name="content">
+	<frame src="csvupload_specialepisode.jsp" name="content">
 	<frame src="csvupload_categorylist.jsp" name="content">
 	<frame src="csvupload_costumedata.jsp" name="content">
 	<frame src="csvupload_selectitem.jsp" name="content">

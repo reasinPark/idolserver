@@ -24,6 +24,8 @@ public class EpisodeList {
 	public int likecount;
 	public String summary;
 	public String subtitle;
+	public int specialid;
+	public int sortnum;
 	public static int nowversion = 0;
 
 	private static ArrayList<EpisodeList> list = null;
@@ -41,7 +43,7 @@ public class EpisodeList {
 		try{
 			conn = ConnectionProvider.getConnection("idol");
 			
-			pstmt = conn.prepareStatement("select Story_id,episode_num,episode_name,csvfilename,ticket,gem,purchaseinfo,reward_gem,reward_ticket,rewardinfo,writer,director,imgname,likecount,summary,subtitle from episode");
+			pstmt = conn.prepareStatement("select Story_id,episode_num,episode_name,csvfilename,ticket,gem,purchaseinfo,reward_gem,reward_ticket,rewardinfo,writer,director,imgname,likecount,summary,subtitle,specialid,sortnum from episode");
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()){
@@ -63,6 +65,8 @@ public class EpisodeList {
 				data.likecount = rs.getInt(idx++);
 				data.summary = rs.getString(idx++);
 				data.subtitle = rs.getString(idx++);
+				data.specialid = rs.getInt(idx++);
+				data.sortnum = rs.getInt(idx++);
 				list.add(data);
 				hash.put(data.Episode_num, data);
 			}
