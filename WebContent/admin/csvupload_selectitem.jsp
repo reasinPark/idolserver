@@ -32,7 +32,7 @@
 <%
 	try {
 		Connection conn = ConnectionProvider.getConnection("idol");
-		PreparedStatement pstmt = conn.prepareStatement("select selectid, price, storyid, epinum, cool, hot, cute, fashion,costumeid from SelectItem");
+		PreparedStatement pstmt = conn.prepareStatement("select selectid, price, storyid, epinum, cool, hot, cute, fashion,costumeid,chnum from SelectItem");
 		ResultSet rs = pstmt.executeQuery();
 				
 		%>
@@ -48,6 +48,7 @@
 				<td>cute</td>
 				<td>fashion</td>
 				<td>costumeid</td>
+				<td>chnum</td>
 			</tr>
 		<%
 		while(rs.next()) {
@@ -62,6 +63,7 @@
 				<td><%=String.valueOf(rs.getInt(7))%></td>
 				<td><%=String.valueOf(rs.getInt(8))%></td>
 				<td><%=String.valueOf(rs.getInt(9))%></td>
+				<td><%=String.valueOf(rs.getInt(10))%></td>
 			</tr>
 		<%
 		}

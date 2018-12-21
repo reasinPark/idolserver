@@ -23,6 +23,8 @@ public class PhotobookData {
 	public int photopage1id;
 	public int photopage2id;
 	public int photopage3id;
+	public String chid;
+	public int chnum;
 	public static int nowversion = 0;
 	
 	private static ArrayList<PhotobookData> list = null;
@@ -40,7 +42,7 @@ public class PhotobookData {
 		try{
 			conn = ConnectionProvider.getConnection("idol");
 			
-			pstmt = conn.prepareStatement("select photobookid,photobookname,col1,col1content,col2,col2content,col3,col3content,col4,col4content,col5,col5content,photopage1id,photopage2id,photopage3id from photobook");			
+			pstmt = conn.prepareStatement("select photobookid,photobookname,col1,col1content,col2,col2content,col3,col3content,col4,col4content,col5,col5content,photopage1id,photopage2id,photopage3id,chid,chnum from photobook");			
 			
 			rs = pstmt.executeQuery();
 			
@@ -62,6 +64,8 @@ public class PhotobookData {
 				data.photopage1id = rs.getInt(idx++);
 				data.photopage2id = rs.getInt(idx++);
 				data.photopage3id = rs.getInt(idx++);
+				data.chid = rs.getString(idx++);
+				data.chnum = rs.getInt(idx++);
 				list.add(data);
 				hash.put(data.photobookid, data);
 			}

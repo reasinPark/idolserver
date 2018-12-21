@@ -13,6 +13,8 @@ public class PhotoDressData {
 	public String thumbnail;
 	public String pdbodyfile;
 	public String pdbodyskin;
+	public String pdarmfile;
+	public String pdarmskin;
 	public String pdheadfile;
 	public String pdheadskin;
 	public String pdhairfile;
@@ -35,7 +37,7 @@ public class PhotoDressData {
 		try{
 			conn = ConnectionProvider.getConnection("idol");
 			
-			pstmt = conn.prepareStatement("select pdid,pdname,thumbnail,pdbodyfile,pdbodyskin,pdheadfile,pdheadskin,pdhairfile,pdhairskin,selectitemid from photodress");
+			pstmt = conn.prepareStatement("select pdid,pdname,thumbnail,pdbodyfile,pdbodyskin,pdarmfile,pdarmskin,pdheadfile,pdheadskin,pdhairfile,pdhairskin,selectitemid from photodress");
 			
 			rs = pstmt.executeQuery();
 			
@@ -47,6 +49,8 @@ public class PhotoDressData {
 				data.thumbnail = rs.getString(idx++);
 				data.pdbodyfile = rs.getString(idx++);
 				data.pdbodyskin = rs.getString(idx++);
+				data.pdarmfile = rs.getString(idx++);
+				data.pdarmskin = rs.getString(idx++);
 				data.pdheadfile = rs.getString(idx++);
 				data.pdheadskin = rs.getString(idx++);
 				data.pdhairfile = rs.getString(idx++);

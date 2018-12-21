@@ -6,7 +6,7 @@
     
 <H2>&nbsp;&nbsp;&nbsp;&nbsp;csv 파일 적용</H2>
 <section>
-	<H3 style="font-size:100">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;배너 데이터</H3>
+	<H3 style="font-size:100">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;화보의상 리스트</H3>
 </section>
 
 <form target="result_frame" action="csvupload_photodresslist_update.jsp" method="post" id="item_form" enctype="Multipart/form-data">

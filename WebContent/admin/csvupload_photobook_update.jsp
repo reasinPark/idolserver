@@ -93,13 +93,13 @@
 					else {
 						int index = 1;
 						
-						pstmt = conn.prepareStatement("insert into photobook (photobookid,photobookname,col1,col1content,col2,col2content,col3,col3content,col4,col4content,col5,col5content,photopage1id,photopage2id,photopage3id) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+						pstmt = conn.prepareStatement("insert into photobook (photobookid,photobookname,col1,col1content,col2,col2content,col3,col3content,col4,col4content,col5,col5content,photopage1id,photopage2id,photopage3id,chi,chnum) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 						
 						for (String output: token) {
 							output = output.replaceAll("\"", "");
 							
 							// int
-							if(index == 1 || index == 13 || index == 14 || index == 15) {
+							if(index == 1 || index == 13 || index == 14 || index == 15||index == 17) {
 								pstmt.setInt(index, Integer.parseInt(output));
 							}
 							// string

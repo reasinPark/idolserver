@@ -32,7 +32,7 @@
 <%
 	try {
 		Connection conn = ConnectionProvider.getConnection("idol");
-		PreparedStatement pstmt = conn.prepareStatement("select pdid,pdname,thumbnail,pdbodyfile,pdbodyskin,pdheadfile,pdheadskin,pdhairfile,pdhairskin,selectitemid from photodress");
+		PreparedStatement pstmt = conn.prepareStatement("select pdid,pdname,thumbnail,pdbodyfile,pdbodyskin,pdheadfile,pdheadskin,pdhairfile,pdhairskin,selectitemid,pdarmfile,pdarmskin from photodress");
 		ResultSet rs = pstmt.executeQuery();
 				
 		%>
@@ -48,6 +48,8 @@
 				<td>hairfile</td>
 				<td>hairskin</td>
 				<td>selectitemid</td>
+				<td>pdarmfile</td>
+				<td>pdarmskin</td>
 			</tr>
 		<%
 		while(rs.next()) {
@@ -63,6 +65,8 @@
 				<td><%=String.valueOf(rs.getString(8))%></td>
 				<td><%=String.valueOf(rs.getString(9))%></td>
 				<td><%=String.valueOf(rs.getInt(10))%></td>
+				<td><%=String.valueOf(rs.getString(11))%></td>
+				<td><%=String.valueOf(rs.getString(12))%></td>
 			</tr>
 		<%
 		}

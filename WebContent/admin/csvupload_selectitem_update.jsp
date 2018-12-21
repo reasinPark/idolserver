@@ -94,13 +94,13 @@
 					else {
 						int index = 1;
 						
-						pstmt = conn.prepareStatement("insert into SelectItem (selectid,price,storyid,epinum,cool,hot,cute,fashion,costumeid) values(?,?,?,?,?,?,?,?,?)");
+						pstmt = conn.prepareStatement("insert into SelectItem (selectid,price,storyid,epinum,cool,hot,cute,fashion,costumeid,chnum) values(?,?,?,?,?,?,?,?,?,?)");
 						
 						for (String output: token) {
 							output = output.replaceAll("\"", "");
 							
 							// int
-							if(index == 1 || index == 2 || index == 4 || index == 5 || index == 6 || index == 7 || index == 8|| index == 9) {
+							if(index == 1 || index == 2 || index == 4 || index == 5 || index == 6 || index == 7 || index == 8|| index == 9||index == 10) {
 								pstmt.setInt(index, Integer.parseInt(output));
 							}
 							// string

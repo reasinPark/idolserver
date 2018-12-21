@@ -93,7 +93,7 @@
 					else {
 						int index = 1;
 						
-						pstmt = conn.prepareStatement("insert into photodress (pdid,pdname,thumbnail,pdbodyfile,pdbodyskin,pdheadfile,pdheadskin,pdhairfile,pdhairskin,selectitemid) values(?,?,?,?,?,?,?,?,?,?)");
+						pstmt = conn.prepareStatement("insert into photodress (pdid,pdname,thumbnail,pdbodyfile,pdbodyskin,pdheadfile,pdheadskin,pdhairfile,pdhairskin,selectitemid,pdarmfile,pdarmskin) values(?,?,?,?,?,?,?,?,?,?,?,?)");
 						
 						for (String output: token) {
 							output = output.replaceAll("\"", "");

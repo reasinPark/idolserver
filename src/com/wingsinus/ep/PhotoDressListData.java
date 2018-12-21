@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class PhotoDressListData {
 	public int photopageid;
 	public int photodressid;
-	public static int nowversion;
+	public static int nowversion = 0;
 	
 	private static ArrayList<PhotoDressListData> list = null;
 	
@@ -34,6 +34,7 @@ public class PhotoDressListData {
 				PhotoDressListData data = new PhotoDressListData();
 				data.photopageid = rs.getInt(idx++);
 				data.photodressid = rs.getInt(idx++);
+//				System.out.println("page id is :"+data.photopageid+", dress id is :"+data.photodressid);
 				list.add(data);
 			}
 		}finally{
@@ -46,6 +47,7 @@ public class PhotoDressListData {
 	private static synchronized void checkDataInit() throws SQLException{
 		if(list == null){
 			list = new ArrayList<PhotoDressListData>();
+			initData();
 		}
 	}
 	

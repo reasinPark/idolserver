@@ -122,6 +122,7 @@
 				data.put("col2content",tmp.col2content);
 				data.put("col3",tmp.col3);
 				data.put("col3content",tmp.col3content);
+				data.put("photobookid",tmp.photobookid);
 				retlist.add(data);
 			}
 			timeInObj.put("Story", retlist);

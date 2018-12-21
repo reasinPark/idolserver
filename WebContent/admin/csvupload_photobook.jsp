@@ -12,8 +12,8 @@
 <form target="result_frame" action="csvupload_photobook_update.jsp" method="post" id="item_form" enctype="Multipart/form-data">
 	<table border = "1" style="border-style:solid;">
 		<tr>
-			<td> 적용할 story.csv 파일 </td>
-			<td><input type="file" name="story" /></td>
+			<td> 적용할 photobook.csv 파일 </td>
+			<td><input type="file" name="photobook" /></td>
 		</tr>
 		<tr>
 			<td colspan = "2" align="center">
@@ -32,7 +32,7 @@
 <%
 	try {
 		Connection conn = ConnectionProvider.getConnection("idol");
-		PreparedStatement pstmt = conn.prepareStatement("select photobookid,photobookname,col1,col1content,col2,col2content,col3,col3content,col4,col4content,col5,col5content,photopage1id,photopage2id,photopage3id from photobook");
+		PreparedStatement pstmt = conn.prepareStatement("select photobookid,photobookname,col1,col1content,col2,col2content,col3,col3content,col4,col4content,col5,col5content,photopage1id,photopage2id,photopage3id,chid,chnum from photobook");
 		ResultSet rs = pstmt.executeQuery();
 				
 		%>
@@ -54,6 +54,8 @@
 				<td>photopage1id</td>
 				<td>photopage2id</td>
 				<td>photopage3id</td>
+				<td>chid</td>
+				<td>chnum</td>
 			</tr>
 		<%
 		while(rs.next()) {
@@ -74,6 +76,8 @@
 				<td><%=String.valueOf(rs.getInt(13))%></td>
 				<td><%=String.valueOf(rs.getInt(14))%></td>
 				<td><%=String.valueOf(rs.getInt(15))%></td>
+				<td><%=String.valueOf(rs.getString(16))%></td>
+				<td><%=String.valueOf(rs.getInt(17))%></td>
 			</tr>
 		<%
 		}

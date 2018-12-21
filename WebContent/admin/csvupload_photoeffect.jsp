@@ -42,7 +42,7 @@
 				<td>photoeffectname</td>
 				<td>thumbnail</td>
 				<td>type</td>
-				<td>photoeffectname</td>
+				<td>photoeffectobjname</td>
 			</tr>
 		<%
 		while(rs.next()) {

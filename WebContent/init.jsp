@@ -214,6 +214,7 @@
 								data.put("cute",selmpS.Cute);
 								data.put("fashion",selmpS.Fashion);
 								data.put("costumeid",selmpS.costumeid);
+								data.put("chnum",selmpS.chnum);
 								sellist.add(data);
 							}
 							
@@ -508,6 +509,7 @@
 					data.put("cute",smp.Cute);
 					data.put("fashion",smp.Fashion);
 					data.put("costumeid",smp.costumeid);
+					data.put("chnum",smp.chnum);
 					System.out.println("data is :"+smp.SelectId+","+smp.Epinum);
 					sellist.add(data);
 				}
@@ -544,6 +546,7 @@
 					data.put("photopage1id", dmp.photopage1id);
 					data.put("photopage2id", dmp.photopage2id);
 					data.put("photopage3id",dmp.photopage3id);
+					data.put("chid",dmp.chid);
 					pblist.add(data);
 				}
 				
@@ -606,6 +609,7 @@
 				
 				//photo dress list data
 				ArrayList<PhotoDressListData> pdldtmp = PhotoDressListData.getDataAll();
+				System.out.println("size is :"+pdldtmp.size());
 				for(int i=0;i<pdldtmp.size();i++){
 					PhotoDressListData dmp = pdldtmp.get(i);
 					JSONObject data = new JSONObject();
@@ -624,6 +628,8 @@
 					data.put("thumbnail",dmp.thumbnail);
 					data.put("pdbodyfile",dmp.pdbodyfile);
 					data.put("pdbodyskin",dmp.pdbodyskin);
+					data.put("pdarmfile",dmp.pdarmfile);
+					data.put("pdarmskin",dmp.pdarmskin);
 					data.put("pdheadfile",dmp.pdheadfile);
 					data.put("pdheadskin",dmp.pdheadskin);
 					data.put("pdhairfile",dmp.pdhairfile);
@@ -709,6 +715,225 @@
 				LogManager.writeNorLog(userid, "success", cmd, "null","null", 0);
 			}else{
 				LogManager.writeNorLog(userid, "fail", cmd, "null","null", 0);
+			}
+			
+			//유저 랭크 및 스코어 정보 가져오기
+			//ch1 = 성태양, 2 = 사다함, 3 = 우도빈, 4 = 마다솔, 5 = 알렌
+			pstmt = conn.prepareStatement("select (select count(*) from ch1_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_weekrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c1weekrank",rs.getInt(1));
+				ret.put("c1weekpoint",rs.getInt(2));
+			}
+			
+			pstmt = conn.prepareStatement("select (select count(*) from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c1fullrank",rs.getInt(1));
+				ret.put("c1fullpoint",rs.getInt(2));
+			}
+			
+			pstmt = conn.prepareStatement("select (select count(*) from ch2_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_weekrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c2weekrank",rs.getInt(1));
+				ret.put("c2weekpoint",rs.getInt(2));
+			}
+			
+			pstmt = conn.prepareStatement("select (select count(*) from ch2_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_fullrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c2fullrank",rs.getInt(1));
+				ret.put("c2fullpoint",rs.getInt(2));
+			}
+			
+			pstmt = conn.prepareStatement("select (select count(*) from ch3_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch3_weekrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c3weekrank",rs.getInt(1));
+				ret.put("c3weekpoint",rs.getInt(2));
+			}
+			
+			pstmt = conn.prepareStatement("select (select count(*) from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c3fullrank",rs.getInt(1));
+				ret.put("c3fullpoint",rs.getInt(2));
+			}
+			
+
+			pstmt = conn.prepareStatement("select (select count(*) from ch4_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_weekrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c4weekrank",rs.getInt(1));
+				ret.put("c4weekpoint",rs.getInt(2));
+			}
+			
+			pstmt = conn.prepareStatement("select (select count(*) from ch4_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_fullrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c4fullrank",rs.getInt(1));
+				ret.put("c4fullpoint",rs.getInt(2));
+			}
+			
+
+			pstmt = conn.prepareStatement("select (select count(*) from ch5_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_weekrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c5weekrank",rs.getInt(1));
+				ret.put("c5weekpoint",rs.getInt(2));
+			}
+			
+			pstmt = conn.prepareStatement("select (select count(*) from ch5_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_fullrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c5fullrank",rs.getInt(1));
+				ret.put("c5fullpoint",rs.getInt(2));
+			}
+			
+			
+			//주간 누적 10등까지 정보 가져오기
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch1_weekrank where panpoint > t.panpoint) from ch1_weekrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch1list = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch1list.add(data);
+			}
+			
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch2_weekrank where panpoint > t.panpoint) from ch2_weekrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch2list = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch2list.add(data);
+			}
+			
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch3_weekrank where panpoint > t.panpoint) from ch3_weekrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch3list = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch3list.add(data);
+			}
+			
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch4_weekrank where panpoint > t.panpoint) from ch4_weekrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch4list = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch4list.add(data);
+			}
+			
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch5_weekrank where panpoint > t.panpoint) from ch5_weekrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch5list = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch5list.add(data);
+			}
+						
+			//전체 10등까지 정보 가져오기
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch1_fullrank where panpoint > t.panpoint) from ch1_fullrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch1flist = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch1flist.add(data);
+			}
+			
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch2_fullrank where panpoint > t.panpoint) from ch2_fullrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch2flist = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch2flist.add(data);
+			}
+			
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch3_fullrank where panpoint > t.panpoint) from ch3_fullrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch3flist = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch3flist.add(data);
+			}
+			
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch4_fullrank where panpoint > t.panpoint) from ch4_fullrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch4flist = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch4flist.add(data);
+			}
+			
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch5_fullrank where panpoint > t.panpoint) from ch5_fullrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch5flist = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch5flist.add(data);
+			}
+			
+			//유저 화보 촬영 정보 초기화 (날짜가 지났으면 촬영 정보가 있는 애들중 남은 촬영 기회가 0인 애들을 1을 만들어 준다.)
+			pstmt = conn.prepareStatement("update user_photopageset set leftshot = 1 where uid = ? and datediff(lastshotdate,now())<0");
+			pstmt.setString(1, userid);
+			pstmt.executeUpdate();
+			
+			//유저 화보 촬영 정보 로드 
+			pstmt = conn.prepareStatement("select photopageid,photoeffectid,photoposeid,photodressid,photofaceid,lastshotdate,leftshot from user_photopageset where uid = ?");
+			pstmt.setString(1, userid);
+			JSONArray  photolist = new JSONArray();
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("photopageid",rs.getInt(1));
+				data.put("photoeffectid",rs.getInt(2));
+				data.put("photoposeid",rs.getInt(3));
+				data.put("photodressid",rs.getInt(4));
+				data.put("photofaceid",rs.getInt(5));
+				data.put("lastshotdate",rs.getTimestamp(6).getTime()/1000);
+				data.put("leftshot",rs.getInt(7));
+				photolist.add(data);
 			}
 			
 			System.out.println("start user skin in login");
@@ -952,12 +1177,26 @@
 			ret.put("photofacelistdata",pflistdata);
 			ret.put("photofacedata",pfdata);
 			
+			ret.put("c1list",ch1list);
+			ret.put("c2list",ch2list);
+			ret.put("c3list",ch3list);
+			ret.put("c4list",ch4list);
+			ret.put("c5list",ch5list);
+			
+			ret.put("c1flist",ch1flist);
+			ret.put("c2flist",ch2flist);
+			ret.put("c3flist",ch3flist);
+			ret.put("c4flist",ch4flist);
+			ret.put("c5flist",ch5flist);
+			
+			
 			ret.put("userstorylikelist", likelist);
 			ret.put("userselectlist",selectlist);
 			ret.put("namelist",namelist);
 			ret.put("userstorylist",storylist);
 			ret.put("userspstorylist",spstorylist);
 			ret.put("userskinlist",skinlist);
+			ret.put("userphotolist",photolist);
 			ret.put("costumelist",clist);
 			ret.put("bannerlist", blist);
 			ret.put("episodelist",elist);
@@ -1641,6 +1880,7 @@
 			int cute = 0;
 			int hot = 0;
 			int fashion = 0;
+			int chnum = 0;
 			
 			System.out.println("input write user choice"+Storyid+","+episodenum+","+selectid);
 			
@@ -1673,6 +1913,7 @@
 				hot = data.Hot;
 				cute = data.Cute;
 				fashion = data.Fashion;
+				chnum = data.chnum;
 				System.out.println("data is :"+data.Price+", user is :"+userid);
 				if(data.Price == 0){
 					System.out.println("no data");
@@ -1760,6 +2001,23 @@
 							//유저 코스츔 정보 추가
 							//코스츔이 있는지 확인 
 							//이미 가지고 있는 코스츔인지 확인
+							
+							//포인트 추가 처리 
+
+							if(data.chnum>0){
+								String query = "update ch"+data.chnum+"_weekrank set point = point + ? where uid = ?";
+								pstmt = conn.prepareStatement(query);
+								pstmt.setInt(1, data.Price/10);
+								pstmt.setString(2, userid);
+								pstmt.executeUpdate();
+								
+								query = "update ch"+data.chnum+"_fullrank set point = point +? where uid = ?";
+								pstmt = conn.prepareStatement(query);
+								pstmt.setInt(1, data.Price/10);
+								pstmt.setString(2, userid);
+								pstmt.executeUpdate();								
+							}
+							
 							if(data.costumeid>0){
 
 								pstmt = conn.prepareStatement("select CostumeId from user_skindata where uid = ? and CostumeId = ?");
@@ -3275,7 +3533,387 @@
 				ret.put("already",1);
 				ret.put("result",1);
 			}
-		}else if(cmd.equals("endspepisode")){
+		}else if(cmd.equals("shotphotopage")){
+			//check photobook page times
+			//check photopage id
+			//if already have update photopagedata
+			//if not insert photopagedata
+			int pageid = Integer.valueOf(request.getParameter("pageid"));
+			int effid = Integer.valueOf(request.getParameter("effid"));
+			int poseid = Integer.valueOf(request.getParameter("poseid"));
+			int dressid = Integer.valueOf(request.getParameter("dressid"));
+			int faceid = Integer.valueOf(request.getParameter("faceid"));
+			
+			
+			pstmt = conn.prepareStatement("select leftshot from user_photopageset where uid = ? and photopageid = ?");
+			pstmt.setString(1, userid);
+			pstmt.setInt(2, pageid);
+			rs = pstmt.executeQuery();
+			
+			boolean reflash = false;
+			if(rs.next()){
+				if(rs.getInt(1)>0){
+					//update
+					pstmt = conn.prepareStatement("update user_photopageset set leftshot = leftshot -1 , lastshotdate = now(), photoeffectid = ?, photoposeid = ?, photodressid = ?, photofaceid = ? where uid = ? and photopageid = ?");
+					pstmt.setInt(1, effid);
+					pstmt.setInt(2, poseid);
+					pstmt.setInt(3, dressid);
+					pstmt.setInt(4, faceid);
+					pstmt.setString(5, userid);
+					pstmt.setInt(6, pageid);
+					pstmt.executeUpdate();
+					reflash = true;
+					ret.put("result",1);//success
+				}else{
+					ret.put("result",0);//not enough
+				}
+			}else{
+				//insert
+				pstmt = conn.prepareStatement("insert into user_photopageset values(?,?,?,?,?,?,now(),0)");
+				pstmt.setString(1, userid);
+				pstmt.setInt(2, pageid);
+				pstmt.setInt(3, effid);
+				pstmt.setInt(4, poseid);
+				pstmt.setInt(5, dressid);
+				pstmt.setInt(6, faceid);
+				pstmt.executeUpdate();
+				reflash = true;
+				ret.put("result",1);//success
+			}
+			
+			if(reflash){
+				//유저 화보 촬영 정보 로드 
+				pstmt = conn.prepareStatement("select photopageid,photoeffectid,photoposeid,photodressid,photofaceid,lastshotdate,leftshot from user_photopageset where uid = ?");
+				pstmt.setString(1, userid);
+				JSONArray photolist = new JSONArray();
+				rs = pstmt.executeQuery();
+				while(rs.next()){
+					JSONObject data = new JSONObject();
+					data.put("photopageid",rs.getInt(1));
+					data.put("photoeffectid",rs.getInt(2));
+					data.put("photoposeid",rs.getInt(3));
+					data.put("photodressid",rs.getInt(4));
+					data.put("photofaceid",rs.getInt(5));
+					data.put("lastshotdate",rs.getTimestamp(6).getTime()/1000);
+					data.put("leftshot",rs.getInt(7));
+					photolist.add(data);
+				}
+				ret.put("userphotolist",photolist);
+			}
+		}
+		else if(cmd.equals("resetphotobook")){
+			//star check
+			//page1,2,3가 잔여가 없는지 확인
+			int page1id = Integer.valueOf(request.getParameter("page1id"));
+			int page2id = Integer.valueOf(request.getParameter("page2id"));
+			int page3id = Integer.valueOf(request.getParameter("page3id"));
+			int bookid = Integer.valueOf(request.getParameter("bookid"));
+			
+			int sum = 3;
+			int freegem = 0;
+			int cashgem = 0;
+			
+			pstmt = conn.prepareStatement("select sum(leftshot) from user_photopageset where uid = ? and (photopageid = ? or photopageid = ? or photopageid = ?)");
+			pstmt.setString(1, userid);
+			pstmt.setInt(2, page1id);
+			pstmt.setInt(3, page2id);
+			pstmt.setInt(4, page3id);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				sum = rs.getInt(1);
+			}
+			if(sum==0){
+				//gem check
+				pstmt = conn.prepareStatement("select freegem,cashgem from user where uid = ?");
+				pstmt.setString(1, userid);
+				rs = pstmt.executeQuery();
+				if(rs.next()){
+					freegem = rs.getInt(1);
+					cashgem = rs.getInt(2);
+					int leftgem = 0;
+					String query = "update user set freegem = ? , cashgem = ? where uid = ?";
+					pstmt = conn.prepareStatement(query);
+					if(cashgem>=10){
+						pstmt.setInt(1, freegem);
+						pstmt.setInt(2, cashgem-10);
+						pstmt.setString(3, userid);
+					}else{
+						leftgem = 10-cashgem;
+						pstmt.setInt(1, freegem-leftgem);
+						pstmt.setInt(2, 0);
+						pstmt.setString(3, userid);
+					}
+					if(pstmt.executeUpdate()==1){
+						
+						//포인트 추가 넣어야됨
+						PhotobookData bookdata = PhotobookData.getData(bookid);
+						//String query = "update ch"+data.chnum+"_weekrank set point = point + ? where uid = ?";
+						query = "update ch"+bookdata.chnum+"_weekrank set point = point + 1 where uid = ?";
+						pstmt = conn.prepareStatement(query);
+						pstmt.setString(1, userid);
+						pstmt.executeUpdate();
+						
+						query = "update ch"+bookdata.chnum+"_fullrank set point = point +1 where uid = ?";
+						pstmt = conn.prepareStatement(query);
+						pstmt.setString(1, userid);
+						pstmt.executeUpdate();
+						
+
+						//유저 랭크 및 스코어 정보 가져오기
+						//ch1 = 성태양, 2 = 사다함, 3 = 우도빈, 4 = 마다솔, 5 = 알렌
+						pstmt = conn.prepareStatement("select (select count(*) from ch1_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_weekrank t where uid = ?");
+						pstmt.setString(1,userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("c1weekrank",rs.getInt(1));
+							ret.put("c1weekpoint",rs.getInt(2));
+						}
+						
+						pstmt = conn.prepareStatement("select (select count(*) from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
+						pstmt.setString(1,userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("c1fullrank",rs.getInt(1));
+							ret.put("c1fullpoint",rs.getInt(2));
+						}
+						
+						pstmt = conn.prepareStatement("select (select count(*) from ch2_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_weekrank t where uid = ?");
+						pstmt.setString(1,userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("c2weekrank",rs.getInt(1));
+							ret.put("c2weekpoint",rs.getInt(2));
+						}
+						
+						pstmt = conn.prepareStatement("select (select count(*) from ch2_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_fullrank t where uid = ?");
+						pstmt.setString(1,userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("c2fullrank",rs.getInt(1));
+							ret.put("c2fullpoint",rs.getInt(2));
+						}
+						
+						pstmt = conn.prepareStatement("select (select count(*) from ch3_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch3_weekrank t where uid = ?");
+						pstmt.setString(1,userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("c3weekrank",rs.getInt(1));
+							ret.put("c3weekpoint",rs.getInt(2));
+						}
+						
+						pstmt = conn.prepareStatement("select (select count(*) from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
+						pstmt.setString(1,userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("c3fullrank",rs.getInt(1));
+							ret.put("c3fullpoint",rs.getInt(2));
+						}
+						
+
+						pstmt = conn.prepareStatement("select (select count(*) from ch4_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_weekrank t where uid = ?");
+						pstmt.setString(1,userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("c4weekrank",rs.getInt(1));
+							ret.put("c4weekpoint",rs.getInt(2));
+						}
+						
+						pstmt = conn.prepareStatement("select (select count(*) from ch4_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_fullrank t where uid = ?");
+						pstmt.setString(1,userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("c4fullrank",rs.getInt(1));
+							ret.put("c4fullpoint",rs.getInt(2));
+						}
+						
+
+						pstmt = conn.prepareStatement("select (select count(*) from ch5_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_weekrank t where uid = ?");
+						pstmt.setString(1,userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("c5weekrank",rs.getInt(1));
+							ret.put("c5weekpoint",rs.getInt(2));
+						}
+						
+						pstmt = conn.prepareStatement("select (select count(*) from ch5_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_fullrank t where uid = ?");
+						pstmt.setString(1,userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("c5fullrank",rs.getInt(1));
+							ret.put("c5fullpoint",rs.getInt(2));
+						}
+						
+						
+						//주간 누적 10등까지 정보 가져오기
+						pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch1_weekrank where panpoint > t.panpoint) from ch1_weekrank t order by panpoint desc limit 10");
+						rs = pstmt.executeQuery();
+						JSONArray ch1list = new JSONArray();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("point",rs.getInt(1));
+							data.put("name",rs.getString(2));
+							data.put("rank",rs.getInt(3));
+							ch1list.add(data);
+						}
+						
+						pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch2_weekrank where panpoint > t.panpoint) from ch2_weekrank t order by panpoint desc limit 10");
+						rs = pstmt.executeQuery();
+						JSONArray ch2list = new JSONArray();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("point",rs.getInt(1));
+							data.put("name",rs.getString(2));
+							data.put("rank",rs.getInt(3));
+							ch2list.add(data);
+						}
+						
+						pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch3_weekrank where panpoint > t.panpoint) from ch3_weekrank t order by panpoint desc limit 10");
+						rs = pstmt.executeQuery();
+						JSONArray ch3list = new JSONArray();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("point",rs.getInt(1));
+							data.put("name",rs.getString(2));
+							data.put("rank",rs.getInt(3));
+							ch3list.add(data);
+						}
+						
+						pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch4_weekrank where panpoint > t.panpoint) from ch4_weekrank t order by panpoint desc limit 10");
+						rs = pstmt.executeQuery();
+						JSONArray ch4list = new JSONArray();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("point",rs.getInt(1));
+							data.put("name",rs.getString(2));
+							data.put("rank",rs.getInt(3));
+							ch4list.add(data);
+						}
+						
+						pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch5_weekrank where panpoint > t.panpoint) from ch5_weekrank t order by panpoint desc limit 10");
+						rs = pstmt.executeQuery();
+						JSONArray ch5list = new JSONArray();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("point",rs.getInt(1));
+							data.put("name",rs.getString(2));
+							data.put("rank",rs.getInt(3));
+							ch5list.add(data);
+						}
+									
+						//전체 10등까지 정보 가져오기
+						pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch1_fullrank where panpoint > t.panpoint) from ch1_fullrank t order by panpoint desc limit 10");
+						rs = pstmt.executeQuery();
+						JSONArray ch1flist = new JSONArray();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("point",rs.getInt(1));
+							data.put("name",rs.getString(2));
+							data.put("rank",rs.getInt(3));
+							ch1flist.add(data);
+						}
+						
+						pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch2_fullrank where panpoint > t.panpoint) from ch2_fullrank t order by panpoint desc limit 10");
+						rs = pstmt.executeQuery();
+						JSONArray ch2flist = new JSONArray();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("point",rs.getInt(1));
+							data.put("name",rs.getString(2));
+							data.put("rank",rs.getInt(3));
+							ch2flist.add(data);
+						}
+						
+						pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch3_fullrank where panpoint > t.panpoint) from ch3_fullrank t order by panpoint desc limit 10");
+						rs = pstmt.executeQuery();
+						JSONArray ch3flist = new JSONArray();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("point",rs.getInt(1));
+							data.put("name",rs.getString(2));
+							data.put("rank",rs.getInt(3));
+							ch3flist.add(data);
+						}
+						
+						pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch4_fullrank where panpoint > t.panpoint) from ch4_fullrank t order by panpoint desc limit 10");
+						rs = pstmt.executeQuery();
+						JSONArray ch4flist = new JSONArray();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("point",rs.getInt(1));
+							data.put("name",rs.getString(2));
+							data.put("rank",rs.getInt(3));
+							ch4flist.add(data);
+						}
+						
+						pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch5_fullrank where panpoint > t.panpoint) from ch5_fullrank t order by panpoint desc limit 10");
+						rs = pstmt.executeQuery();
+						JSONArray ch5flist = new JSONArray();
+						while(rs.next()){
+							JSONObject data = new JSONObject();
+							data.put("point",rs.getInt(1));
+							data.put("name",rs.getString(2));
+							data.put("rank",rs.getInt(3));
+							ch5flist.add(data);
+						}
+						
+
+						ret.put("c1list",ch1list);
+						ret.put("c2list",ch2list);
+						ret.put("c3list",ch3list);
+						ret.put("c4list",ch4list);
+						ret.put("c5list",ch5list);
+						
+						ret.put("c1flist",ch1flist);
+						ret.put("c2flist",ch2flist);
+						ret.put("c3flist",ch3flist);
+						ret.put("c4flist",ch4flist);
+						ret.put("c5flist",ch5flist);
+						
+						
+						pstmt = conn.prepareStatement("select freegem,cashgem from user where uid = ?");
+						pstmt.setString(1, userid);
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							ret.put("freegem",rs.getInt(1));
+							ret.put("cashgem",rs.getInt(2));
+						}
+						
+						pstmt = conn.prepareStatement("update user_photopageset set leftshot = 1 where uid = ? and (photopageid = ? or photopageid = ? or photopageid = ?)");
+						pstmt.setString(1, userid);
+						pstmt.setInt(2, page1id);
+						pstmt.setInt(3, page2id);
+						pstmt.setInt(4, page3id);
+						if(pstmt.executeUpdate()>0){
+							pstmt = conn.prepareStatement("select photopageid,photoeffectid,photoposeid,photodressid,photofaceid,lastshotdate,leftshot from user_photopageset where uid = ?");
+							pstmt.setString(1,userid);
+							JSONArray photolist = new JSONArray();
+							rs = pstmt.executeQuery();
+							while(rs.next()){
+								JSONObject data = new JSONObject();
+								data.put("photopageid",rs.getInt(1));
+								data.put("photoeffectid",rs.getInt(2));
+								data.put("photoposeid",rs.getInt(3));
+								data.put("photodressid",rs.getInt(4));
+								data.put("photofaceid",rs.getInt(5));
+								data.put("lastshotdate",rs.getTimestamp(6).getTime()/1000);
+								data.put("leftshot",rs.getInt(7));
+								photolist.add(data);
+							}
+							
+							ret.put("userphotolist",photolist);
+							ret.put("result",1);
+						}else{
+							ret.put("result",0);
+						}
+						
+					}else{
+						ret.put("result",0);//error
+					}
+					
+				}				
+			}
+		}
+		else if(cmd.equals("endspepisode")){
 			//보유 체크
 			//다 읽음 기록
 			//종료전달 - 의미 없음
