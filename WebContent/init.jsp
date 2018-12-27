@@ -547,6 +547,7 @@
 					data.put("photopage2id", dmp.photopage2id);
 					data.put("photopage3id",dmp.photopage3id);
 					data.put("chid",dmp.chid);
+					data.put("chnum",dmp.chnum);
 					pblist.add(data);
 				}
 				
@@ -719,7 +720,7 @@
 			
 			//유저 랭크 및 스코어 정보 가져오기
 			//ch1 = 성태양, 2 = 사다함, 3 = 우도빈, 4 = 마다솔, 5 = 알렌
-			pstmt = conn.prepareStatement("select (select count(*) from ch1_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_weekrank t where uid = ?");
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch1_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_weekrank t where uid = ?");
 			pstmt.setString(1,userid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -727,7 +728,7 @@
 				ret.put("c1weekpoint",rs.getInt(2));
 			}
 			
-			pstmt = conn.prepareStatement("select (select count(*) from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
 			pstmt.setString(1,userid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -735,7 +736,7 @@
 				ret.put("c1fullpoint",rs.getInt(2));
 			}
 			
-			pstmt = conn.prepareStatement("select (select count(*) from ch2_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_weekrank t where uid = ?");
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch2_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_weekrank t where uid = ?");
 			pstmt.setString(1,userid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -743,7 +744,7 @@
 				ret.put("c2weekpoint",rs.getInt(2));
 			}
 			
-			pstmt = conn.prepareStatement("select (select count(*) from ch2_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_fullrank t where uid = ?");
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch2_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_fullrank t where uid = ?");
 			pstmt.setString(1,userid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -751,7 +752,7 @@
 				ret.put("c2fullpoint",rs.getInt(2));
 			}
 			
-			pstmt = conn.prepareStatement("select (select count(*) from ch3_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch3_weekrank t where uid = ?");
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch3_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch3_weekrank t where uid = ?");
 			pstmt.setString(1,userid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -759,7 +760,7 @@
 				ret.put("c3weekpoint",rs.getInt(2));
 			}
 			
-			pstmt = conn.prepareStatement("select (select count(*) from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
 			pstmt.setString(1,userid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -768,7 +769,7 @@
 			}
 			
 
-			pstmt = conn.prepareStatement("select (select count(*) from ch4_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_weekrank t where uid = ?");
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch4_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_weekrank t where uid = ?");
 			pstmt.setString(1,userid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -776,7 +777,7 @@
 				ret.put("c4weekpoint",rs.getInt(2));
 			}
 			
-			pstmt = conn.prepareStatement("select (select count(*) from ch4_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_fullrank t where uid = ?");
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch4_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_fullrank t where uid = ?");
 			pstmt.setString(1,userid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -785,7 +786,7 @@
 			}
 			
 
-			pstmt = conn.prepareStatement("select (select count(*) from ch5_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_weekrank t where uid = ?");
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch5_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_weekrank t where uid = ?");
 			pstmt.setString(1,userid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -793,7 +794,7 @@
 				ret.put("c5weekpoint",rs.getInt(2));
 			}
 			
-			pstmt = conn.prepareStatement("select (select count(*) from ch5_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_fullrank t where uid = ?");
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch5_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_fullrank t where uid = ?");
 			pstmt.setString(1,userid);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
@@ -2005,17 +2006,49 @@
 							//포인트 추가 처리 
 
 							if(data.chnum>0){
-								String query = "update ch"+data.chnum+"_weekrank set point = point + ? where uid = ?";
+								int count = 0;
+								String query = "select count(*) from ch"+data.chnum+"_weekrank where uid = ?";
 								pstmt = conn.prepareStatement(query);
-								pstmt.setInt(1, data.Price/10);
-								pstmt.setString(2, userid);
-								pstmt.executeUpdate();
+								pstmt.setString(1, userid);
+								rs = pstmt.executeQuery();
+								if(rs.next()){
+									count = rs.getInt(1);
+								}
+								if(count==0){
+									query = "insert into ch"+data.chnum+"_weekrank values(?,?)";
+									pstmt = conn.prepareStatement(query);
+									pstmt.setString(1, userid);
+									pstmt.setInt(2, data.Price/10);
+									pstmt.executeUpdate();
+								}else{
+									query = "update ch"+data.chnum+"_weekrank set panpoint = panpoint + ? where uid = ?";
+									System.out.println("query data is :"+query);
+									pstmt = conn.prepareStatement(query);
+									pstmt.setInt(1, data.Price/10);
+									pstmt.setString(2, userid);
+									pstmt.executeUpdate();
+								}
 								
-								query = "update ch"+data.chnum+"_fullrank set point = point +? where uid = ?";
+								query = "select count(*) from ch"+data.chnum+"_fullrank where uid = ?";
 								pstmt = conn.prepareStatement(query);
-								pstmt.setInt(1, data.Price/10);
-								pstmt.setString(2, userid);
-								pstmt.executeUpdate();								
+								pstmt.setString(1, userid);
+								rs = pstmt.executeQuery();
+								if(rs.next()){
+									count = rs.getInt(1);
+								}
+								if(count == 0){
+									query = "insert into ch"+data.chnum+"_fullrank values(?,?)";
+									pstmt = conn.prepareStatement(query);
+									pstmt.setString(1, userid);
+									pstmt.setInt(2, data.Price/10);
+									pstmt.executeUpdate();
+								}else{
+									query = "update ch"+data.chnum+"_fullrank set panpoint = panpoint +? where uid = ?";
+									pstmt = conn.prepareStatement(query);
+									pstmt.setInt(1, data.Price/10);
+									pstmt.setString(2, userid);
+									pstmt.executeUpdate();
+								}																
 							}
 							
 							if(data.costumeid>0){
@@ -3647,21 +3680,50 @@
 						
 						//포인트 추가 넣어야됨
 						PhotobookData bookdata = PhotobookData.getData(bookid);
-						//String query = "update ch"+data.chnum+"_weekrank set point = point + ? where uid = ?";
-						query = "update ch"+bookdata.chnum+"_weekrank set point = point + 1 where uid = ?";
+						int count = 0;
+						query = "select count(*) from ch"+bookdata.chnum+"_weekrank where uid = ?";
 						pstmt = conn.prepareStatement(query);
 						pstmt.setString(1, userid);
-						pstmt.executeUpdate();
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							count = rs.getInt(1);
+						}
+						if(count==0){
+							query = "insert into ch"+bookdata.chnum+"_weekrank values(?,1)";
+							pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, userid);
+							pstmt.executeUpdate();
+						}else{
+							query = "update ch"+bookdata.chnum+"_weekrank set panpoint = panpoint + 1 where uid = ?";
+							System.out.println("query data is :"+query);
+							pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, userid);
+							pstmt.executeUpdate();
+						}
 						
-						query = "update ch"+bookdata.chnum+"_fullrank set point = point +1 where uid = ?";
+						query = "select count(*) from ch"+bookdata.chnum+"_fullrank where uid = ?";
 						pstmt = conn.prepareStatement(query);
 						pstmt.setString(1, userid);
-						pstmt.executeUpdate();
+						rs = pstmt.executeQuery();
+						if(rs.next()){
+							count = rs.getInt(1);
+						}
+						if(count == 0){
+							query = "insert into ch"+bookdata.chnum+"_fullrank values(?,1)";
+							pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, userid);
+							pstmt.executeUpdate();
+						}else{
+							query = "update ch"+bookdata.chnum+"_fullrank set panpoint = panpoint +1 where uid = ?";
+							pstmt = conn.prepareStatement(query);
+							pstmt.setString(1, userid);
+							pstmt.executeUpdate();
+						}			
 						
 
 						//유저 랭크 및 스코어 정보 가져오기
 						//ch1 = 성태양, 2 = 사다함, 3 = 우도빈, 4 = 마다솔, 5 = 알렌
-						pstmt = conn.prepareStatement("select (select count(*) from ch1_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_weekrank t where uid = ?");
+						pstmt = conn.prepareStatement("select (select count(*)+1 from ch1_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_weekrank t where uid = ?");
 						pstmt.setString(1,userid);
 						rs = pstmt.executeQuery();
 						if(rs.next()){
@@ -3669,7 +3731,7 @@
 							ret.put("c1weekpoint",rs.getInt(2));
 						}
 						
-						pstmt = conn.prepareStatement("select (select count(*) from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
+						pstmt = conn.prepareStatement("select (select count(*)+1 from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
 						pstmt.setString(1,userid);
 						rs = pstmt.executeQuery();
 						if(rs.next()){
@@ -3677,7 +3739,7 @@
 							ret.put("c1fullpoint",rs.getInt(2));
 						}
 						
-						pstmt = conn.prepareStatement("select (select count(*) from ch2_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_weekrank t where uid = ?");
+						pstmt = conn.prepareStatement("select (select count(*)+1 from ch2_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_weekrank t where uid = ?");
 						pstmt.setString(1,userid);
 						rs = pstmt.executeQuery();
 						if(rs.next()){
@@ -3685,7 +3747,7 @@
 							ret.put("c2weekpoint",rs.getInt(2));
 						}
 						
-						pstmt = conn.prepareStatement("select (select count(*) from ch2_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_fullrank t where uid = ?");
+						pstmt = conn.prepareStatement("select (select count(*)+1 from ch2_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch2_fullrank t where uid = ?");
 						pstmt.setString(1,userid);
 						rs = pstmt.executeQuery();
 						if(rs.next()){
@@ -3693,7 +3755,7 @@
 							ret.put("c2fullpoint",rs.getInt(2));
 						}
 						
-						pstmt = conn.prepareStatement("select (select count(*) from ch3_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch3_weekrank t where uid = ?");
+						pstmt = conn.prepareStatement("select (select count(*)+1 from ch3_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch3_weekrank t where uid = ?");
 						pstmt.setString(1,userid);
 						rs = pstmt.executeQuery();
 						if(rs.next()){
@@ -3701,7 +3763,7 @@
 							ret.put("c3weekpoint",rs.getInt(2));
 						}
 						
-						pstmt = conn.prepareStatement("select (select count(*) from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
+						pstmt = conn.prepareStatement("select (select count(*)+1 from ch1_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch1_fullrank t where uid = ?");
 						pstmt.setString(1,userid);
 						rs = pstmt.executeQuery();
 						if(rs.next()){
@@ -3710,7 +3772,7 @@
 						}
 						
 
-						pstmt = conn.prepareStatement("select (select count(*) from ch4_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_weekrank t where uid = ?");
+						pstmt = conn.prepareStatement("select (select count(*)+1 from ch4_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_weekrank t where uid = ?");
 						pstmt.setString(1,userid);
 						rs = pstmt.executeQuery();
 						if(rs.next()){
@@ -3718,7 +3780,7 @@
 							ret.put("c4weekpoint",rs.getInt(2));
 						}
 						
-						pstmt = conn.prepareStatement("select (select count(*) from ch4_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_fullrank t where uid = ?");
+						pstmt = conn.prepareStatement("select (select count(*)+1 from ch4_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch4_fullrank t where uid = ?");
 						pstmt.setString(1,userid);
 						rs = pstmt.executeQuery();
 						if(rs.next()){
@@ -3727,7 +3789,7 @@
 						}
 						
 
-						pstmt = conn.prepareStatement("select (select count(*) from ch5_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_weekrank t where uid = ?");
+						pstmt = conn.prepareStatement("select (select count(*)+1 from ch5_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_weekrank t where uid = ?");
 						pstmt.setString(1,userid);
 						rs = pstmt.executeQuery();
 						if(rs.next()){
@@ -3735,7 +3797,7 @@
 							ret.put("c5weekpoint",rs.getInt(2));
 						}
 						
-						pstmt = conn.prepareStatement("select (select count(*) from ch5_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_fullrank t where uid = ?");
+						pstmt = conn.prepareStatement("select (select count(*)+1 from ch5_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch5_fullrank t where uid = ?");
 						pstmt.setString(1,userid);
 						rs = pstmt.executeQuery();
 						if(rs.next()){
