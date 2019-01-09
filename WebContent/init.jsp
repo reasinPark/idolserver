@@ -916,10 +916,11 @@
 			}
 			
 			//유저 화보 촬영 정보 초기화 (날짜가 지났으면 촬영 정보가 있는 애들중 남은 촬영 기회가 0인 애들을 1을 만들어 준다.)
-			pstmt = conn.prepareStatement("update user_photopageset set leftshot = 1 where uid = ? and datediff(lastshotdate,now())<0");
+			/* pstmt = conn.prepareStatement("update user_photopageset set leftshot = 1 where uid = ? and datediff(lastshotdate,now())<0");
 			pstmt.setString(1, userid);
 			pstmt.executeUpdate();
-			
+			 */
+			 
 			//유저 화보 촬영 정보 로드 
 			pstmt = conn.prepareStatement("select photopageid,photoeffectid,photoposeid,photodressid,photofaceid,lastshotdate,leftshot from user_photopageset where uid = ?");
 			pstmt.setString(1, userid);
@@ -1592,7 +1593,16 @@
 					System.out.println("upd ate checker is :"+checker+ "uid is :"+userid);
 					if(checker==1){
 						System.out.println("step 1");
-						EpisodeList data = EpisodeList.getData(episodenum);
+						ArrayList<EpisodeList> emp = EpisodeList.getDataAll();
+						EpisodeList data = new EpisodeList();
+						for(int i=0;i<emp.size();i++){
+							EpisodeList tda = emp.get(i);
+							if(tda.Story_id.equals(Storyid)&&tda.Episode_num==episodenum){
+								data = tda;
+								break;
+							}
+						}
+						
 						System.out.println("reward ticket is :"+data.reward_ticket+", gem is :"+data.reward_gem);
 						pstmt = conn.prepareStatement("update user set freeticket = freeticket + ?, freegem = freegem + ? where uid = ?");
 						pstmt.setInt(1, data.reward_ticket);
@@ -1658,7 +1668,17 @@
 				int checker = pstmt.executeUpdate();
 				System.out.println("checker is :"+checker+ "uid is :"+userid);
 				if(checker==1){
-					EpisodeList data = EpisodeList.getData(episodenum);
+
+					ArrayList<EpisodeList> emp = EpisodeList.getDataAll();
+					EpisodeList data = new EpisodeList();
+					for(int i=0;i<emp.size();i++){
+						EpisodeList tda = emp.get(i);
+						if(tda.Story_id.equals(Storyid)&&tda.Episode_num==episodenum){
+							data = tda;
+							break;
+						}
+					}
+					
 					pstmt = conn.prepareStatement("update user set freeticket = freeticket + ?, freegem = freegem + ? where uid = ?");
 					pstmt.setInt(1, data.reward_ticket);
 					pstmt.setInt(2, data.reward_gem);
@@ -1829,7 +1849,7 @@
 							int oriticket = freeticket +cashticket;
 							ret.put("myticket", myticket);
 							
-							if (oriticket <= 5) {
+							if (oriticket < 5) {
 								String qry = "";
 								qry = "update user set ticketgentime = now() where uid = ?";
 								pstmt = conn.prepareStatement(qry);
@@ -3632,6 +3652,20 @@
 					photolist.add(data);
 				}
 				ret.put("userphotolist",photolist);
+				
+				//10 스타 넣어주기 
+				pstmt = conn.prepareStatement("update user set freegem = freegem + 10 where uid = ?");
+				pstmt.setString(1, userid);
+				pstmt.executeUpdate();
+				
+				//유저 정보 갱신 
+				pstmt = conn.prepareStatement("select freegem from user where uid = ?");
+				pstmt.setString(1, userid);
+				rs = pstmt.executeQuery();
+				if(rs.next()){
+					ret.put("star",rs.getInt(1));
+				}
+				
 			}
 		}
 		else if(cmd.equals("resetphotobook")){

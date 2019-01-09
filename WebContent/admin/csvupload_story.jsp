@@ -32,7 +32,7 @@
 <%
 	try {
 		Connection conn = ConnectionProvider.getConnection("idol");
-		PreparedStatement pstmt = conn.prepareStatement("select Story_id, csvfilename, title, writer, summary, category_id, imgname, recommend, totalcount, director, sort, engname, comment, col1, col1content, col2, col2content, col3, col3content,photobookid from story");
+		PreparedStatement pstmt = conn.prepareStatement("select Story_id, csvfilename, title, writer, summary, category_id, imgname, recommend, totalcount, director, sort, engname, comment, col1, col1content, col2, col2content, col3, col3content,photobookid,rankchnum from story");
 		ResultSet rs = pstmt.executeQuery();
 				
 		%>
@@ -59,6 +59,7 @@
 				<td>col3</td>
 				<td>col3content</td>
 				<td>photobookid</td>
+				<td>rankchnum</td>
 			</tr>
 		<%
 		while(rs.next()) {
@@ -84,6 +85,7 @@
 				<td><%=String.valueOf(rs.getString(18))%></td>
 				<td><%=String.valueOf(rs.getString(19))%></td>
 				<td><%=String.valueOf(rs.getInt(20))%></td>
+				<td><%=String.valueOf(rs.getInt(21))%></td>
 			</tr>
 		<%
 		}
