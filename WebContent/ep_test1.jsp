@@ -95,6 +95,7 @@
 				JSONObject data = new JSONObject();
 				StoryManager tmp = stList.get(i);
 				int viewcount = 0;
+				
 				pstmt = conn.prepareStatement("select sum(readcount) from episoderead where Story_id = ?");
 				pstmt.setString(1, tmp.Story_id);
 				
@@ -102,7 +103,7 @@
 				if(rs.next()){
 					viewcount = rs.getInt(1);
 				}
-				
+
 				data.put("Story_id", tmp.Story_id);
 				data.put("csvfilename", tmp.csvfilename);
 				data.put("title", tmp.title);
@@ -113,7 +114,6 @@
 				data.put("recommend", tmp.recommend);
 				data.put("totalcount", tmp.totalcount);
 				data.put("director", tmp.diretor);
-				data.put("viewcount", viewcount);
 				data.put("engname",tmp.engname);
 				data.put("comment",tmp.comment);				
 				data.put("col1",tmp.col1);
@@ -124,6 +124,18 @@
 				data.put("col3content",tmp.col3content);
 				data.put("photobookid",tmp.photobookid);
 				data.put("rankchnum",tmp.rankchnum);
+				
+
+				/* if(tmp.rankchnum>0){
+					pstmt = conn.prepareStatement("select sum(panpoint) from ch"+tmp.rankchnum+"_fullrank");
+					
+					rs = pstmt.executeQuery();
+					if(rs.next()){
+						viewcount = rs.getInt(1);
+						System.out.println("sum data is :"+viewcount);
+					}
+				} */
+				data.put("viewcount", viewcount);
 				retlist.add(data);
 			}
 			timeInObj.put("Story", retlist);
