@@ -2365,7 +2365,7 @@
 			int myticket = 0;
 			int needcharge = 0;
 			
-			pstmt = conn.prepareStatement("select ticketgentime,now(),freeticket,cashticket,lastgentime from user where uid = ?");
+			pstmt = conn.prepareStatement("select ticketgentime,now(),freeticket,cashticket from user where uid = ?");
 			pstmt.setString(1,userid);
 			
 			rs = pstmt.executeQuery();
@@ -2374,8 +2374,43 @@
 				ticketGenTime = rs.getTimestamp(1).getTime()/1000;
 				now = rs.getTimestamp(2).getTime()/1000;
 				myticket = rs.getInt(3)+rs.getInt(4);
-				lastGenTime = rs.getTimestamp(5).getTime()/1000;
+				//lastGenTime = rs.getTimestamp(5).getTime()/1000;
 				
+				if(myticket<5){
+					needcharge = (int)(now-ticketGenTime)/(8*60*60);
+					if(needcharge+myticket>5)needcharge = 5-myticket;
+					pstmt = conn.prepareStatement("update user set freeticket = freeticket + ?  where uid = ?");
+					pstmt.setInt(1,needcharge);
+					pstmt.setString(2,userid);
+					if(pstmt.executeUpdate()>0){
+						LogManager.writeNorLog(userid, "success_increase", cmd, "freeticket","null", 1);
+						ret.put("nocharge", 1);
+						ret.put("success", 1);
+						
+						pstmt = conn.prepareStatement("select freegem,cashgem,freeticket,cashticket,ticketgentime,now() from user where uid = ?");
+						pstmt.setString(1, userid);
+						rs = pstmt.executeQuery();
+						
+						if(rs.next()) {
+							ret.put("ticketgentime",rs.getTimestamp(5).getTime()/1000);
+							ret.put("now",rs.getTimestamp(6).getTime()/1000);
+							LogManager.writeCashLog(userid, rs.getInt("freeticket"), rs.getInt("cashticket"), rs.getInt("freegem"), rs.getInt("cashgem"));
+						}
+						else {
+							LogManager.writeNorLog(userid, "fail_cashlog", cmd, "freeticket","null", 1);
+						}
+					}else{
+						LogManager.writeNorLog(userid, "fail_increase", cmd, "freeticket","null", 1);
+						ret.put("nocharge", 1);
+						ret.put("success", 0);
+					}
+				}else {
+					System.out.println("need more time");
+					ret.put("nocharge", 0);
+					ret.put("now", now);
+					ret.put("success", 0);
+				}
+				/* 
 				if(myticket<5){
 					if(lastGenTime<ticketGenTime)lastGenTime=ticketGenTime;
 					needcharge = (int)(now - lastGenTime)/(60*60*8);
@@ -2420,7 +2455,7 @@
 					ret.put("nocharge", 0);
 					ret.put("now", now);
 					ret.put("success", 0);
-				}
+				} */
 				/* 
 				if(ticketGenTime < now){
 					long diffh =  (now-ticketGenTime)/(60*60);
