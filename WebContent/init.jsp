@@ -802,6 +802,23 @@
 				ret.put("c5fullpoint",rs.getInt(2));
 			}
 			
+
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch6_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch6_weekrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c6weekrank",rs.getInt(1));
+				ret.put("c6weekpoint",rs.getInt(2));
+			}
+			
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch6_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch6_fullrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c6fullrank",rs.getInt(1));
+				ret.put("c6fullpoint",rs.getInt(2));
+			}
+			
 			
 			//주간 누적 10등까지 정보 가져오기
 			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch1_weekrank where panpoint > t.panpoint) from ch1_weekrank t order by panpoint desc limit 10");
@@ -858,7 +875,18 @@
 				data.put("rank",rs.getInt(3));
 				ch5list.add(data);
 			}
-						
+			
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch6_weekrank where panpoint > t.panpoint) from ch6_weekrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch6list = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch6list.add(data);
+			}
+			
 			//전체 10등까지 정보 가져오기
 			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch1_fullrank where panpoint > t.panpoint) from ch1_fullrank t order by panpoint desc limit 10");
 			rs = pstmt.executeQuery();
@@ -914,12 +942,24 @@
 				data.put("rank",rs.getInt(3));
 				ch5flist.add(data);
 			}
+
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch6_fullrank where panpoint > t.panpoint) from ch6_fullrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch6flist = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch6flist.add(data);
+			}
 			
 			int c1sum = 0;
 			int c2sum = 0;
 			int c3sum = 0;
 			int c4sum = 0;
 			int c5sum = 0;
+			int c6sum = 0;
 			
 			//전체 팬포인트 값 합.
 			pstmt = conn.prepareStatement("select sum(panpoint) from ch1_fullrank");
@@ -952,11 +992,18 @@
 				c5sum = rs.getInt(1);
 			}
 			
+			pstmt = conn.prepareStatement("select sum(panpoint) from ch6_fullrank");
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				c6sum = rs.getInt(1);
+			}
+			
 			ret.put("c1sum",c1sum);
 			ret.put("c2sum",c2sum);
 			ret.put("c3sum",c3sum);
 			ret.put("c4sum",c4sum);
 			ret.put("c5sum",c5sum);
+			ret.put("c6sum",c6sum);
 			
 			//유저 화보 촬영 정보 초기화 (날짜가 지났으면 촬영 정보가 있는 애들중 남은 촬영 기회가 0인 애들을 1을 만들어 준다.)
 			/* pstmt = conn.prepareStatement("update user_photopageset set leftshot = 1 where uid = ? and datediff(lastshotdate,now())<0");
@@ -1227,12 +1274,14 @@
 			ret.put("c3list",ch3list);
 			ret.put("c4list",ch4list);
 			ret.put("c5list",ch5list);
+			ret.put("c6list",ch6list);
 			
 			ret.put("c1flist",ch1flist);
 			ret.put("c2flist",ch2flist);
 			ret.put("c3flist",ch3flist);
 			ret.put("c4flist",ch4flist);
 			ret.put("c5flist",ch5flist);
+			ret.put("c6flist",ch6flist);
 			
 			
 			ret.put("userstorylikelist", likelist);
@@ -2378,10 +2427,13 @@
 				
 				if(myticket<5){
 					needcharge = (int)(now-ticketGenTime)/(8*60*60);
+					System.out.println("need charge is :"+needcharge+", c is :"+(now-ticketGenTime)+", m is : "+(8*60*60)+", t is :"+((now-ticketGenTime)/(60*60)));
 					if(needcharge+myticket>5)needcharge = 5-myticket;
-					pstmt = conn.prepareStatement("update user set freeticket = freeticket + ?  where uid = ?");
+					System.out.println("need charge mody is :"+needcharge);
+					pstmt = conn.prepareStatement("update user set freeticket = freeticket + ?, ticketgentime = date_add(ticketgentime, interval ? hour)  where uid = ?");
 					pstmt.setInt(1,needcharge);
-					pstmt.setString(2,userid);
+					pstmt.setInt(2,needcharge*8);
+					pstmt.setString(3,userid);
 					if(pstmt.executeUpdate()>0){
 						LogManager.writeNorLog(userid, "success_increase", cmd, "freeticket","null", 1);
 						ret.put("nocharge", 1);
@@ -4189,6 +4241,23 @@
 				ret.put("c5fullpoint",rs.getInt(2));
 			}
 			
+
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch6_weekrank where panpoint > t.panpoint) as rank, t.panpoint from ch6_weekrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c6weekrank",rs.getInt(1));
+				ret.put("c6weekpoint",rs.getInt(2));
+			}
+			
+			pstmt = conn.prepareStatement("select (select count(*)+1 from ch6_fullrank where panpoint > t.panpoint) as rank, t.panpoint from ch6_fullrank t where uid = ?");
+			pstmt.setString(1,userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("c6fullrank",rs.getInt(1));
+				ret.put("c6fullpoint",rs.getInt(2));
+			}
+			
 			
 			//주간 누적 10등까지 정보 가져오기
 			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch1_weekrank where panpoint > t.panpoint) from ch1_weekrank t order by panpoint desc limit 10");
@@ -4245,7 +4314,17 @@
 				data.put("rank",rs.getInt(3));
 				ch5list.add(data);
 			}
-						
+
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch6_weekrank where panpoint > t.panpoint) from ch6_weekrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch6list = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch6list.add(data);
+			}
 			//전체 10등까지 정보 가져오기
 			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch1_fullrank where panpoint > t.panpoint) from ch1_fullrank t order by panpoint desc limit 10");
 			rs = pstmt.executeQuery();
@@ -4302,23 +4381,37 @@
 				ch5flist.add(data);
 			}
 
+			pstmt = conn.prepareStatement("select panpoint,(select avatarname from user where uid = t.uid) as name, (select count(*)+1 from ch6_fullrank where panpoint > t.panpoint) from ch6_fullrank t order by panpoint desc limit 10");
+			rs = pstmt.executeQuery();
+			JSONArray ch6flist = new JSONArray();
+			while(rs.next()){
+				JSONObject data = new JSONObject();
+				data.put("point",rs.getInt(1));
+				data.put("name",rs.getString(2));
+				data.put("rank",rs.getInt(3));
+				ch6flist.add(data);
+			}
+
 			ret.put("c1list",ch1list);
 			ret.put("c2list",ch2list);
 			ret.put("c3list",ch3list);
 			ret.put("c4list",ch4list);
 			ret.put("c5list",ch5list);
+			ret.put("c6list",ch5list);
 			
 			ret.put("c1flist",ch1flist);
 			ret.put("c2flist",ch2flist);
 			ret.put("c3flist",ch3flist);
 			ret.put("c4flist",ch4flist);
-			ret.put("c5flist",ch5flist);			
+			ret.put("c5flist",ch5flist);	
+			ret.put("c6flist",ch5flist);			
 			
 			int c1sum = 0;
 			int c2sum = 0;
 			int c3sum = 0;
 			int c4sum = 0;
 			int c5sum = 0;
+			int c6sum = 0;
 			
 			//전체 팬포인트 값 합.
 			pstmt = conn.prepareStatement("select sum(panpoint) from ch1_fullrank");
@@ -4350,12 +4443,19 @@
 			if(rs.next()){
 				c5sum = rs.getInt(1);
 			}
+
+			pstmt = conn.prepareStatement("select sum(panpoint) from ch6_fullrank");
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				c6sum = rs.getInt(1);
+			}
 			
 			ret.put("c1sum",c1sum);
 			ret.put("c2sum",c2sum);
 			ret.put("c3sum",c3sum);
 			ret.put("c4sum",c4sum);
 			ret.put("c5sum",c5sum);
+			ret.put("c6sum",c6sum);
 		}
 		
 		out.print(ret.toString());
