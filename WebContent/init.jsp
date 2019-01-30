@@ -1931,7 +1931,7 @@
 
 						ret.put("success",1);
 						
-						pstmt = conn.prepareStatement("select freeticket, cashticket from user where uid = ?");
+						pstmt = conn.prepareStatement("select freeticket, cashticket,ticketgentime,now() from user where uid = ?");
 						pstmt.setString(1,userid);
 			
 						rs = pstmt.executeQuery();
@@ -1969,7 +1969,11 @@
 								}
 							}
 							else {
+								ticketGenTime = rs.getTimestamp(3).getTime()/1000;
+								now = rs.getTimestamp(4).getTime()/1000;
 								ret.put("timecheck", 0);
+								ret.put("nowtime",now);
+								ret.put("ticketgentime",ticketGenTime);								
 							}
 						}
 					}
@@ -3782,7 +3786,7 @@
 					photolist.add(data);
 				}
 				ret.put("userphotolist",photolist);
-				boolean isReward = false;
+				/* boolean isReward = false;
 				//오늘 아직 리워드가 안 들어갔으면 
 				pstmt = conn.prepareStatement("select photoreward from user where uid = ?");
 				pstmt.setString(1, userid);
@@ -3806,8 +3810,34 @@
 				rs = pstmt.executeQuery();
 				if(rs.next()){
 					ret.put("star",rs.getInt(1));
+				} */				
+			}
+		}
+		else if(cmd.equals("photoshare")){
+			boolean isReward = false;
+			//오늘 아직 리워드가 안 들어갔으면 
+			pstmt = conn.prepareStatement("select photoreward from user where uid = ?");
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				if(rs.getInt(1)==1){
+					isReward = true;						
 				}
-				
+			}
+			
+			if(isReward){
+				//10 스타 넣어주기 
+				pstmt = conn.prepareStatement("update user set freegem = freegem + 10, photoreward = 0 where uid = ?");
+				pstmt.setString(1, userid);
+				pstmt.executeUpdate();
+			}
+			
+			//유저 정보 갱신 
+			pstmt = conn.prepareStatement("select freegem from user where uid = ?");
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				ret.put("star",rs.getInt(1));
 			}
 		}
 		else if(cmd.equals("resetphotobook")){
@@ -3818,7 +3848,7 @@
 			int page3id = Integer.valueOf(request.getParameter("page3id"));
 			int bookid = Integer.valueOf(request.getParameter("bookid"));
 			
-			int sum = 3;
+			int sum = 0;
 			int freegem = 0;
 			int cashgem = 0;
 			
@@ -3831,7 +3861,8 @@
 			if(rs.next()){
 				sum = rs.getInt(1);
 			}
-			if(sum==0){
+			System.out.println("get data is :"+sum);
+			if(sum<3){
 				//gem check
 				pstmt = conn.prepareStatement("select freegem,cashgem from user where uid = ?");
 				pstmt.setString(1, userid);
@@ -4141,7 +4172,8 @@
 							ret.put("userphotolist",photolist);
 							ret.put("result",1);
 						}else{
-							ret.put("result",0);
+							ret.put("userphotolist",null);
+							ret.put("result",1);
 						}
 						
 					}else{
